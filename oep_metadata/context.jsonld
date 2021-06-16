@@ -40,11 +40,11 @@
             "@type": "xsd:string"
         },
         "type": {
-            "@id": "http://openenergy-platform.org/ontology/oeo/OEO_00040010",
+            "@id": "oeo:OEO_00040010",
             "@type": "xsd:string"
         },
         "about": {
-            "@id": "oeo:IAO_0000136",
+            "@id": "http://purl.obolibrary.org/obo/IAO_0000136",
             "@type": "@id"
         }
     }
