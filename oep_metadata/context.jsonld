@@ -40,6 +40,10 @@
             "@type": "xsd:string"
         },
         "type": {
+            "@id": "csvw:datatype",
+            "@type": "xsd:string"
+        },
+        "unit": {
             "@id": "oeo:OEO_00040010",
             "@type": "xsd:string"
         },
