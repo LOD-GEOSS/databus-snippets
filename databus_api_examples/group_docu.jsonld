@@ -1,0 +1,29 @@
+{
+  "@context": "https://raw.githubusercontent.com/dbpedia/databus-git-mockup/main/dev/context.jsonld",
+  "@graph": [
+      {
+          "@id": "https://databus.dbpedia.org/denis/another-testgroup",
+          "@type": "Group",
+          "label": {
+              "@value": "Test Group",
+              "@language": "en"
+          },
+          "title": {
+              "@value": "Test Group",
+              "@language": "en"
+          },
+          "comment": {
+              "@value": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+              "@language": "en"
+          },
+          "abstract": {
+              "@value": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+              "@language": "en"
+          },
+          "description": {
+              "@value": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+              "@language": "en"
+          }
+      }
+  ]
+}

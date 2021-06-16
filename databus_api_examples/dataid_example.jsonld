@@ -1,0 +1,91 @@
+{
+    "@context": "https://raw.githubusercontent.com/dbpedia/databus-git-mockup/main/dev/context.jsonld",
+    "@graph": [
+        {
+            "@type": "dataid:Dataset",
+            "@id": "https://databus.dbpedia.org/denis/another-testgroup/testartifact/2021-05-07#Dataset",
+            "version": "https://databus.dbpedia.org/denis/another-testgroup/testartifact/2021-05-07",
+            "artifact": "https://databus.dbpedia.org/denis/another-testgroup/testartifact",
+            "group": "https://databus.dbpedia.org/denis/another-testgroup",
+            "hasVersion": "2021-05-07",
+            "issued": "2021-05-07T12:30:44Z",
+            "publisher": "https://yum-yab.github.io/webid.ttl#this",
+            "label": {
+                "@value": "Test Label",
+                "@language": "en"
+            },
+            "title": {
+                "@value": "Test Title",
+                "@language": "en"
+            },
+            "comment": {
+                "@value": "This is a short comment about the test.",
+                "@language": "en"
+            },
+            "abstract": {
+                "@value": "This a short abstract for the dataset. Since this is only a test it is quite insignificant.",
+                "@language": "en"
+            },
+            "description": {
+                "@value": "A bit longer description of the dataset.",
+                "@language": "en"
+            },
+            "license": {
+                "@id": "http://this.is.a.license.uri.com/test"
+            },
+            "distribution": [
+                {
+                    "@id": "https://databus.dbpedia.org/denis/another-testgroup/testartifact/2021-05-07#type=ontology.owl",
+                    "file": "https://databus.dbpedia.org/denis/another-testgroup/testartifact/2021-05-07/testartifact_type=ontology.owl",
+                    "@type": "dataid:SingleFile",
+                    "formatExtension": "owl",
+                    "compression": "none",
+                    "downloadURL": "https://yum-yab.github.io/data/databus-api-test/first/pizza-ont.owl",
+                    "byteSize": "163302",
+                    "sha256sum": "b71592685053db4171d2eaacb1eb1084d927fd6831f7ee8c9329903f90c72763",
+                    "hasVersion": "2021-05-07",
+                    "dataid-cv:type": "ontology"
+                },
+                {
+                    "@id": "https://databus.dbpedia.org/denis/another-testgroup/testartifact/2021-05-07#type=randomData.csv",
+                    "file": "https://databus.dbpedia.org/denis/another-testgroup/testartifact/2021-05-07/testartifact_type=randomData.csv",
+                    "@type": "dataid:SingleFile",
+                    "formatExtension": "csv",
+                    "compression": "none",
+                    "downloadURL": "https://yum-yab.github.io/data/databus-api-test/first/Sample500.csv",
+                    "byteSize": "34243",
+                    "sha256sum": "1c69ff99c105ab0f3459a4cd928f14284c996702148a2f62637df69f3e1a01ab",
+                    "hasVersion": "2021-05-07",
+                    "dataid-cv:type": "randomData"
+                },
+                {
+                    "@id": "https://databus.dbpedia.org/denis/another-testgroup/testartifact/2021-05-07#type=turbineData_extra=external.json",
+                    "file": "https://databus.dbpedia.org/denis/another-testgroup/testartifact/2021-05-07/testartifact_type=turbineData_extra=external.json",
+                    "@type": "dataid:SingleFile",
+                    "formatExtension": "json",
+                    "compression": "none",
+                    "downloadURL": "https://openenergy-platform.org/api/v0/schema/supply/tables/wind_turbine_library/rows/",
+                    "byteSize": "170171",
+                    "sha256sum": "af7b3594156ae9753eab55fa9dacbd2b352b8e75af2ec5068a09473014859816",
+                    "hasVersion": "2021-05-07",
+                    "dataid-cv:type": "turbineData",
+                    "dataid-cv:extra": "external"
+                }
+            ]
+        },
+        {
+            "@type": "rdf:Property",
+            "@id": "dataid-cv:type",
+            "rdfs:subPropertyOf": {
+                "@id": "dataid:contentVariant"
+            }
+        },
+        {
+            "@type": "rdf:Property",
+            "@id": "dataid-cv:extra",
+            "rdfs:subPropertyOf": {
+                "@id": "dataid:contentVariant"
+            }
+        }
+    ]
+}
