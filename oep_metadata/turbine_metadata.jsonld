@@ -1,11 +1,8 @@
 {
-  "@context": "https://raw.githubusercontent.com/LOD-GEOSS/databus-snippets/master/oep_metadata/context.jsonld",
   "name": "wind_turbine_library",
   "title": "Wind Turbine Library",
   "id": "https://openenergy-platform.org/dataedit/view/supply/wind_turbine_library",
-  "@id": "https://databus.dbpedia.org/denis/lod-geoss-example/api-example/2021-05-10/api-example_type=turbineData.json",
   "description": "A collection of the most common wind turbines with information on capacity, power curves and other parameters available from specification sheets",
-  "subject": "oeo:OEO_00000448",
   "language": [
     "en-GB",
     "en-US",
@@ -286,7 +283,6 @@
             "name": "installed_capacity",
             "description": "installed capacity of turbine",
             "type": "bigint",
-            "about": "oeo:OEO_00230002",
             "unit": "kW"
           },
           {
