@@ -30,6 +30,29 @@ If you want to submit content via API you need to create the DataID yourself. An
   - The `group-metadata`: This is only documentation for the group, no file information is included here. An example can be seen in `databus_api_examples/group_docu.jsonld`.
   - The actual `DataID`: This tells the Databus the necessary metadata to publish on the databus. An example for this can be seen in `databus_api_examples/dataid_example.jsonld`.
 
+The following table axplains the purpose and restrictions of the key in the JSON-LD file. It is based on the keys used in the examples in `databus_api_examples`.
+
+| Level | JSON key | Description | Restrictions |
+--- | --- | --- | ---
+| Group | id    | The identifier for the Group. | This will be part of the groups IRI and therefor needs to be safe for an URL. Allowed are lowercase characters  and -|
+| Group | label | A human-readable name for the group.| At least 3 characters long, no further restrictions. | 
+| Group | title | A name given to the group. In most cases its fine using the same as in label. | At least 3 characters long, no further restrictions. |
+| Group | abstract | A short description of the group | A not too long, one line sentence about the group. | At least 25 characters long. |
+| Group | comment | A short description of the group | Can be the same as abstract | At least 25 characters long. |
+| Group | description | A longer and more detailed description of the purpose of the group | At least 25 characters long. |
+| Artifact | id | The identifier for the Artifact. | This will be part of the groups IRI and therefor needs to be safe for an URL. Allowed are lowercase characters and -|
+| Artifact | label | A human-readable name for the artifact.| At least 3 characters long, no further restrictions. | 
+| Artifact | title | A name given to the artifact. In most cases its fine using the same as in label. | At least 3 characters long, no further restrictions. |
+| Artifact | abstract | A short description of the artifact | A not too long, one line sentence about the group. | At least 25 characters long. |
+| Artifact | comment | A short description of the artifact | Can be the same as abstract | At least 25 characters long. |
+| Version | id | The identifier for the Version. | Commonly a version is identified by time (e.g. 2021-07-01) or with a semantic version (e.g. 1.2.1) | Limited to alphanumeric characters and `.-` | 
+| Version | publisher | A link to a webid | Needs to be an valid WebID (check out [this](https://github.com/dbpedia/webid) for more) |
+| Version | license | A URI of an license (like http://creativecommons.org/licenses/by/4.0/) | Needs to be a valid URI |
+| Version | description | A longer and more detailed description of the purpose of the artifact |  At least 25 characters long. |
+
+
+
+
 #### Step 2: Deploying to the Databus
 
 For this another two Steps are required:
