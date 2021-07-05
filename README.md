@@ -37,8 +37,8 @@ The following table axplains the purpose and restrictions of the key in the JSON
 | Group | id    | The identifier for the Group. | This will be part of the groups IRI and therefor needs to be safe for an URL. Allowed are lowercase characters  and -|
 | Group | label | A human-readable name for the group.| At least 3 characters long, no further restrictions. | 
 | Group | title | A name given to the group. In most cases its fine using the same as in label. | At least 3 characters long, no further restrictions. |
-| Group | abstract | A short description of the group | A not too long, one line sentence about the group. | At least 25 characters long. |
-| Group | comment | A short description of the group | Can be the same as abstract | At least 25 characters long. |
+| Group | abstract | A short description of the group. A not too long, one line sentence about the group. | At least 25 characters long. |
+| Group | comment | A short description of the group. Can be the same as abstract | At least 25 characters long. |
 | Group | description | A longer and more detailed description of the purpose of the group | At least 25 characters long. |
 | Artifact | id | The identifier for the Artifact. | This will be part of the groups IRI and therefor needs to be safe for an URL. Allowed are lowercase characters and -|
 | Artifact | label | A human-readable name for the artifact.| At least 3 characters long, no further restrictions. | 
