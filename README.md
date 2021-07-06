@@ -30,7 +30,7 @@ If you want to submit content via API you need to create the DataID yourself. An
   - The `group-metadata`: This is only documentation for the group, no file information is included here. An example can be seen in `databus_api_examples/group_docu.jsonld`.
   - The actual `DataID`: This tells the Databus the necessary metadata to publish on the databus. An example for this can be seen in `databus_api_examples/dataid_example.jsonld`.
 
-The following table axplains the purpose and restrictions of the key in the JSON-LD file. It is based on the keys used in the examples in `databus_api_examples`.
+The following table axplains the purpose and restrictions of the key in the JSON-LD file. It is based on the keys used in the examples in `databus_api_examples`. **NOTE**: The restrictions in this table are are currently more strict then the actual live tests (e.g. a group is with underscores would work), but this may change in the future and being a bit more strict then necessary is usually better.
 
 | Level | JSON key | Description | Restrictions |
 --- | --- | --- | ---
