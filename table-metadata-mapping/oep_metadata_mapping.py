@@ -29,7 +29,6 @@ ns_mapping = {
 @dataclass
 class ColumnInfo:
     """A simple datacass for the information of a certain column"""
-
     label: str
     description: str
     unit: str
