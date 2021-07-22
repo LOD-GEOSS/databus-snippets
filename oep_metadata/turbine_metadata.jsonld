@@ -283,7 +283,7 @@
             "unit": null
           },
           {
-            "name": "installed_capacity",
+            "name": "nominal_power",
             "description": "installed capacity of turbine",
             "type": "bigint",
             "about": "oeo:OEO_00230002",
