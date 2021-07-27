@@ -181,7 +181,7 @@ def get_colname_by_info(col_info: ColumnInfo, ontgraph: Graph, lang: str = "en")
 
 
 def get_dataframe_with_mapped_columns(
-    data, cols_dict: Dict[str, ColumnInfo], ontology_graph: Graph
+    data, cols_dict: Dict[str, ColumnInfo], ontology_graph: Graph, lang="en"
 ) -> pd.DataFrame:
     """Generates a pandas DataFrame based on the DataPackage from the oep (data), the a dict of colnames -> ColumnInfo and the ontology graph"""
     df = pd.DataFrame(data=data)
@@ -193,13 +193,12 @@ def get_dataframe_with_mapped_columns(
     for colname in columns:
         if colname in cols_dict:
             rename_mapping[colname] = get_colname_by_info(
-                cols_dict[colname], ontology_graph
+                cols_dict[colname], ontology_graph, lang=lang
             )
     return df.rename(columns=rename_mapping)
 
 
-if __name__ == "__main__":
-
+def main():
     # Step 0.5: Load the OEO ontology from Archivo
     oeo = load_oeo()
 
@@ -214,7 +213,7 @@ if __name__ == "__main__":
 
     # Step 4: Generate the pandas dataframe based on the data from the Databus, the mapping of colnames -> colInfo and the open energy ontology
     df = get_dataframe_with_mapped_columns(
-        data, col_info_mapping, oeo
+        data, col_info_mapping, oeo, lang="en"
     )
 
     # Step 5: Print out the dataframe as csv out.csv
@@ -226,3 +225,8 @@ if __name__ == "__main__":
 
     # Step 2.5: Generate the colname -> ColumnInfo mapping based on the moss metadata
     # col_info_mapping = get_columns_from_metadata(moss_metadata)
+
+
+if __name__ == "__main__":
+
+    main()
