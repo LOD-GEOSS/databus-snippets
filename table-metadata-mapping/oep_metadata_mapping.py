@@ -38,6 +38,19 @@ class ColumnInfo:
     datatype: str
     about: str
 
+    def get_column_name_from_ontology(self, ontgraph: Graph, lang="en"):
+        """Returns the new column name determined by the ColumnInfo object and the data in the passed ontgraph. language can be set, default is en"""
+
+        if self.about is None:
+            return self.label
+        else:
+            about_label = get_label_of_resource(self.about, ontgraph, lang=lang)
+
+            if about_label == "None":
+                return self.label
+            else:
+                return f"{about_label} ({self.about})"
+
 def return_entry(o):
     if o == "None":
         return None
@@ -166,19 +179,6 @@ SELECT DISTINCT ?label ?description ?unit ?datatype ?about WHERE {{
         )
     return result_map
 
-def get_colname_by_info(col_info: ColumnInfo, ontgraph: Graph, lang: str = "en"):
-    """Returns the new column name determined by the available info and the data in the passed ontgraph. language can be set, default is en"""
-
-    if col_info.about is None:
-        return col_info.label
-    else:
-        about_label = get_label_of_resource(col_info.about, ontgraph, lang=lang)
-
-        if about_label == "None":
-            return col_info.label
-        else:
-            return f"{about_label} ({col_info.about})"
-
 
 def get_dataframe_with_mapped_columns(
     data, cols_dict: Dict[str, ColumnInfo], ontology_graph: Graph, lang="en"
@@ -192,13 +192,11 @@ def get_dataframe_with_mapped_columns(
 
     for colname in columns:
         if colname in cols_dict:
-            rename_mapping[colname] = get_colname_by_info(
-                cols_dict[colname], ontology_graph, lang=lang
-            )
+            rename_mapping[colname] = cols_dict[colname].get_column_name_from_ontology(ontgraph=ontology_graph, lang=lang)
     return df.rename(columns=rename_mapping)
 
 
-def main():
+def usage_example():
     # Step 0.5: Load the OEO ontology from Archivo
     oeo = load_oeo()
 
@@ -229,4 +227,4 @@ def main():
 
 if __name__ == "__main__":
 
-    main()
+    usage_example()
