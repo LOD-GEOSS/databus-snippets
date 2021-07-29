@@ -89,7 +89,7 @@ class MetadataContext:
                 return f"{about_label} ({col_info.about})"
 
     def gen_dataframe(
-        self, file_id, lang="en"
+        self, file_id, lang="en", column_infos: Dict[str, ColumnInfo] = None
     ) -> pd.DataFrame:
         """Generates a pandas DataFrame based on the DataPackage from the oep (data), the a dict of colnames -> ColumnInfo and the ontology graph"""
 
@@ -101,14 +101,17 @@ class MetadataContext:
 
         rename_mapping = {}
 
-        cols_dict = self.__get_columns_from_databus(file_id)
+        if column_infos is None:
+            cols_dict = self.get_columns_from_databus(file_id)
+        else:
+            cols_dict = column_infos
 
         for colname in columns:
             if colname in cols_dict:
                 rename_mapping[colname] = self.__get_column_name_from_ontology(cols_dict[colname], lang=lang)
         return df.rename(columns=rename_mapping)
 
-    def __get_columns_from_databus(self, file_id: str) -> Dict[str, ColumnInfo]:
+    def get_columns_from_databus(self, file_id: str) -> Dict[str, ColumnInfo]:
         """Returns a dict with column_name -> column info from the metadata in the mods endpoint"""
 
         query_string = f"""PREFIX dataid: <http://dataid.dbpedia.org/ns/core#>
@@ -166,14 +169,6 @@ def usage_example():
     df = meta_context.gen_dataframe(databus_file_id)
 
     df.to_csv("out.csv")
-
-    # OPTIONAL: Retrieve metadata directly from moss instead of the databus (replaces Step 2)
-    # Step 2: Load the metadata annotated submitted via MOSS for the given file id
-    # moss_metadata = load_metadata_from_moss(databus_file_id)
-
-    # Step 2.5: Generate the colname -> ColumnInfo mapping based on the moss metadata
-    # col_info_mapping = get_columns_from_metadata(moss_metadata)
-
 
 if __name__ == "__main__":
     usage_example()
