@@ -11,11 +11,11 @@ from typing import List
 class DataGroup:
     account_name: str
     id: str
-    label: str
     title: str
-    comment: str
     abstract: str
     description: str
+    comment: str = None
+    label: str = None
     context: str = "https://raw.githubusercontent.com/dbpedia/databus-git-mockup/main/dev/context.jsonld"
 
     def get_target_uri(self) -> str:
@@ -29,18 +29,17 @@ class DataGroup:
 
         group_data_dict = {
             "@context": self.context,
-            "@graph": [
-                {
-                    "@id": group_uri,
-                    "@type": "Group",
-                    "label": {"@value": self.label, "@language": "en"},
-                    "title": {"@value": self.title, "@language": "en"},
-                    "comment": {"@value": self.comment, "@language": "en"},
-                    "abstract": {"@value": self.abstract, "@language": "en"},
-                    "description": {"@value": self.description, "@language": "en"},
-                }
-            ],
+            "@id": group_uri,
+            "@type": "Group",
+            "title": {"@value": self.title, "@language": "en"},
+            "abstract": {"@value": self.abstract, "@language": "en"},
+            "description": {"@value": self.description, "@language": "en"},
         }
+        if self.comment is not None:
+            group_data_dict["comment"] = {"@value": self.comment, "@language": "en"}
+        if self.label is not None:
+            group_data_dict["label"] = {"@value": self.label, "@language": "en"}
+        
         return json.dumps(group_data_dict)
 
 
@@ -66,13 +65,13 @@ class DataVersion:
     artifact: str
     version: str
     title: str
-    label: str
     publisher: str
-    comment: str
     abstract: str
     description: str
     license: str
     databus_files: List[DatabusFile]
+    label: str = None
+    comment: str = None
     issued: datetime = field(default_factory=datetime.now)
     context: str = "https://raw.githubusercontent.com/dbpedia/databus-git-mockup/main/dev/context.jsonld"
 
@@ -84,7 +83,7 @@ class DataVersion:
 
         distinct_cv_definitions = {}
         for dbfile in self.databus_files:
-            for key, value in dbfile.cvs.items():
+            for key in dbfile.cvs:
 
                 if not key in distinct_cv_definitions:
                     distinct_cv_definitions[key] = {
@@ -140,9 +139,7 @@ class DataVersion:
                     "hasVersion": self.version,
                     "issued": self.timestamp,
                     "publisher": self.publisher,
-                    "label": {"@value": self.label, "@language": "en"},
                     "title": {"@value": self.title, "@language": "en"},
-                    "comment": {"@value": self.comment, "@language": "en"},
                     "abstract": {"@value": self.abstract, "@language": "en"},
                     "description": {"@value": self.description, "@language": "en"},
                     "license": {"@id": self.license},
@@ -150,6 +147,12 @@ class DataVersion:
                 }
             ],
         }
+
+        if self.comment is not None:
+            data_id_dict["@graph"][0]["comment"] = {"@value": self.comment, "@language": "en"}
+
+        if self.label is not None:
+            data_id_dict["@graph"][0]["label"] = {"@value": self.label, "@language": "en"}
 
         for _, named_cv_prop in self.__distinct_cvs().items():
             data_id_dict["@graph"].append(named_cv_prop)
@@ -244,8 +247,6 @@ if __name__ == "__main__":
         version=version,
         title=title,
         publisher=publisher,
-        label=label,
-        comment=comment,
         abstract=abstract,
         description=description,
         license=license,
@@ -255,11 +256,9 @@ if __name__ == "__main__":
     databus_group = DataGroup(
         account_name=account_name,
         id=group,
-        label="Test Group",
         title="Test Group",
         abstract="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-        comment="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
         description="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
     )
 
-    deploy_to_databus(account_name, "passwort", databus_group, databus_version)
+    deploy_to_databus(account_name, "rückenprobleme", databus_group, databus_version)
