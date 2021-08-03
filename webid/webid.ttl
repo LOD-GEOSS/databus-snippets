@@ -1,0 +1,20 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix cert: <http://www.w3.org/ns/auth/cert#> .
+@prefix rdfs: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dbo: <http://dbpedia.org/ontology/> .
+
+<> a foaf:PersonalProfileDocument ;
+   foaf:maker <#this> ;
+   foaf:primaryTopic <#this> .
+
+
+<#this> a foaf:Person, dbo:DBpedian ;
+   foaf:name "LOD GEOSS";
+   foaf:img <https://reiner-lemoine-institut.de/wp-content/uploads/2019/09/LOD-GEOSS_Logo.png> ;
+   cert:key [ 
+       a cert:RSAPublicKey;
+       rdfs:label "13.11.2018, first WebID";
+       cert:modulus "AD407E71CDA045B2651E7E7CCA222ADF1B8D56CD5AB722039E31977721733531C3BED3AEC6A86385106BCD3FF4CC9BB40C2F818C0890B7F01863612F62484C2EC895E67C67C1F539FCB5704A312D6BBF5B4CDC506421D327B01B8D6D4E4787ECEEF7A5BC6D1B17746FFFB16650BA6360F241853A5B3A9378396D1124F1DB48C2DBB100791FD5711F27F3E29D353948A844C8D7EEFE51390AF7651E5E0728C77E11BA93D6F67C21795EFE8CE2CEBA279455503C5D6163D798F25F237D58FA7C0C27F30B412FA2462859140460ED28719A040B90D5781971CE00029679A6D9BB5A5FB3955513DF0D8291952F35F0923A282685B7D921F69D343180C794A43F8797"^^xsd:hexBinary;
+       cert:exponent "65537"^^xsd:nonNegativeInteger 
+      ] . 
