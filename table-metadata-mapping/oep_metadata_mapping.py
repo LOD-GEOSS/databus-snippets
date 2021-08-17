@@ -129,16 +129,18 @@ PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX prov: <http://www.w3.org/ns/prov#>
 
 SELECT DISTINCT ?label ?description ?unit ?datatype ?about WHERE {{
-  ?dfi csvw:table/csvw:tableSchema ?tableSchema .
-  ?tableSchema csvw:column ?col .
-  ?col rdfs:label ?label .
-  ?col oeo:OEO_00040010 ?unit .
-  ?col dct:description ?description .
-  ?col csvw:datatype ?datatype .
-  OPTIONAL {{ ?col obo:IAO_0000136 ?about . }}
-  ?activity a <http://mods.tools.dbpedia.org/ns/demo#ApiDemoMod>; 
-       prov:used <https://databus.dbpedia.org/denis/lod-geoss-example/api-example/2021-06-22/api-example_type=turbineData.json> .
-}}  """
+  GRAPH ?g {{
+    ?dfi csvw:table/csvw:tableSchema ?tableSchema .
+    ?tableSchema csvw:column ?col .
+    ?col rdfs:label ?label .
+    ?col oeo:OEO_00040010 ?unit .
+    ?col dct:description ?description .
+    ?col csvw:datatype ?datatype .
+    OPTIONAL {{ ?col obo:IAO_0000136 ?about . }}
+    ?activity a <http://mods.tools.dbpedia.org/ns/demo#ApiDemoMod>;
+         prov:used <{file_id}> .
+  }}
+}} """
         sparql = SPARQLWrapper(self.metadata_endpoint)
         sparql.setQuery(query_string)
         sparql.setReturnFormat(JSON)
