@@ -13,6 +13,7 @@ from SPARQLWrapper import SPARQLWrapper, JSON
 @dataclass
 class ColumnInfo:
     """A simple datacass for the information of a certain column"""
+
     label: str
     description: str
     unit: str
@@ -108,31 +109,38 @@ class MetadataContext:
 
         for colname in columns:
             if colname in cols_dict:
-                rename_mapping[colname] = self.__get_column_name_from_ontology(cols_dict[colname], lang=lang)
+                rename_mapping[colname] = self.__get_column_name_from_ontology(
+                    cols_dict[colname], lang=lang
+                )
         return df.rename(columns=rename_mapping)
 
     def get_columns_from_databus(self, file_id: str) -> Dict[str, ColumnInfo]:
         """Returns a dict with column_name -> column info from the metadata in the mods endpoint"""
 
         query_string = f"""PREFIX dataid: <http://dataid.dbpedia.org/ns/core#>
-    PREFIX dct:    <http://purl.org/dc/terms/>
-    PREFIX dcat:   <http://www.w3.org/ns/dcat#>
-    PREFIX db:     <https://databus.dbpedia.org/>
-    PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
-    PREFIX csvw: <http://www.w3.org/ns/csvw#>
-    PREFIX oeo: <http://openenergy-platform.org/ontology/oeo/>
-    PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX dct:    <http://purl.org/dc/terms/>
+PREFIX dcat:   <http://www.w3.org/ns/dcat#>
+PREFIX db:     <https://databus.dbpedia.org/>
+PREFIX rdf:    <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs:   <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX csvw: <http://www.w3.org/ns/csvw#>
+PREFIX oeo: <http://openenergy-platform.org/ontology/oeo/>
+PREFIX obo: <http://purl.obolibrary.org/obo/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
 
-    SELECT DISTINCT ?label ?description ?unit ?datatype ?about WHERE {{
-    <{file_id}> csvw:table/csvw:tableSchema ?tableSchema .
+SELECT DISTINCT ?label ?description ?unit ?datatype ?about WHERE {{
+  GRAPH ?g {{
+    ?dfi csvw:table/csvw:tableSchema ?tableSchema .
     ?tableSchema csvw:column ?col .
     ?col rdfs:label ?label .
     ?col oeo:OEO_00040010 ?unit .
     ?col dct:description ?description .
     ?col csvw:datatype ?datatype .
     OPTIONAL {{ ?col obo:IAO_0000136 ?about . }}
-    }} """
+    ?activity a <http://mods.tools.dbpedia.org/ns/demo#ApiDemoMod>;
+         prov:used <{file_id}> .
+  }}
+}} """
         sparql = SPARQLWrapper(self.metadata_endpoint)
         sparql.setQuery(query_string)
         sparql.setReturnFormat(JSON)
@@ -161,14 +169,17 @@ class MetadataContext:
 
 def usage_example():
     # generate the metadata context
-    meta_context = MetadataContext("https://archivo.dbpedia.org/download?o=http%3A//openenergy-platform.org/ontology/oeo/&f=ttl&v=2021.05.03-181314")
+    meta_context = MetadataContext(
+        "https://archivo.dbpedia.org/download?o=http%3A//openenergy-platform.org/ontology/oeo/&f=ttl&v=2021.05.03-181314"
+    )
 
     # Step 1: Set the databus file with the OEP data
-    databus_file_id = "https://databus.dbpedia.org/denis/lod-geoss-example/api-example/2021-05-10/api-example_type=turbineData.json"
+    databus_file_id = "https://databus.dbpedia.org/denis/lod-geoss-example/api-example/2021-06-22/api-example_type=turbineData.json"
 
     df = meta_context.gen_dataframe(databus_file_id)
 
     df.to_csv("out.csv")
+
 
 if __name__ == "__main__":
     usage_example()
