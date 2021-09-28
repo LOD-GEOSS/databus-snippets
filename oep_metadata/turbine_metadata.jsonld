@@ -269,7 +269,7 @@
             "name": "id",
             "description": "unambiguous unique number for table entry",
             "type": "bigint",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": null
           },
@@ -277,7 +277,7 @@
             "name": "turbine_id",
             "description": "unambiguous unique number for turbine",
             "type": "bigint",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": null
           },
@@ -285,7 +285,7 @@
             "name": "manufacturer",
             "description": "name of manufacturer or producer",
             "type": "text",
-			"about": "OEO:00000045",
+			"is_about": "OEO:00000045",
 			"value_reference": null,
             "unit": null
           },
@@ -293,7 +293,7 @@
             "name": "name",
             "description": "Turbine name as in product description of manufacturer",
             "type": "text",
-			"about": "IAO:0000421",
+			"is_about": "IAO:0000421",
 			"value_reference": null,
             "unit": null
           },
@@ -301,7 +301,7 @@
             "name": "turbine_type",
             "description": "Turbine name for all manufacturers in a consistent Format",
             "type": "text",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": null
           },
@@ -309,7 +309,7 @@
             "name": "installed_capacity",
             "description": "installed capacity of turbine",
             "type": "bigint",
-            "about": "oeo:OEO_00230002",
+            "is_about": "oeo:OEO_00230002",
 			"value_reference": null,
             "unit": "kW"
           },
@@ -317,7 +317,7 @@
             "name": "rotor_diameter",
             "description": "diameter of installed rotor",
             "type": "numeric",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": "m"
           },
@@ -325,7 +325,7 @@
             "name": "rotor_area",
             "description": "Area covered by rotating rotor. Note UO class not completely accurate.",
             "type": "numeric",
-			"about": "UO:0000047",
+			"is_about": "UO:0000047",
 			"value_reference": null,
             "unit": "m²"
           },
@@ -333,7 +333,7 @@
             "name": "hub_height",
             "description": "Height of turbine hub. Several possible heights separated by semicolon ",
             "type": "text",
-			"about": "OEO:00140000",
+			"is_about": "OEO:00140000",
 			"value_reference": null,
             "unit": "m"
           },
@@ -341,7 +341,7 @@
             "name": "max_speed_drive",
             "description": "maximum rotational speed",
             "type": "numeric",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": "revolutions per minute"
           },
@@ -349,7 +349,7 @@
             "name": "wind_class_iec",
             "description": "wind class conforming to IEC Standard",
             "type": "text",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": null
           },
@@ -357,7 +357,7 @@
             "name": "wind_zone_dibt",
             "description": "Suitable wind zone(s) according to DIBt",
             "type": "text",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": null
           },
@@ -365,7 +365,7 @@
             "name": "power_density",
             "description": "Nominal power per rotor area. Note OEO class not completely accurate.",
             "type": "numeric",
-			"about": "OEO:00010072",
+			"is_about": "OEO:00010072",
 			"value_reference": null,
             "unit": "W/m²"
           },
@@ -373,7 +373,7 @@
             "name": "power_density_2",
             "description": "Reciprocal nominal power per rotor area. Note OEO class not completely accurate.",
             "type": "numeric",
-			"about": "OEO:00010072",
+			"is_about": "OEO:00010072",
 			"value_reference": null,
             "unit": "m²/kW"
           },
@@ -381,7 +381,7 @@
             "name": "calculated",
             "description": "Boolean information if specifications were calculated rather than measured",
             "type": "boolean",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": null
           },
@@ -389,7 +389,7 @@
             "name": "has_power_curve",
             "description": "Boolean information whether power curve is available",
             "type": "boolean",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": null
           },
@@ -397,7 +397,7 @@
             "name": "power_curve_wind_speeds",
             "description": "List of wind speeds in accordance with list of values for power curve. The two colums represent the power curve for each turbine",
             "type": "text",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": "m/s"
           },
@@ -405,7 +405,7 @@
             "name": "power_curve_values",
             "description": "List of power values in accordance to wind speeds of power_curve_wind_speeds",
             "type": "text",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": "kW"
           },
@@ -413,7 +413,7 @@
             "name": "has_cp_curve",
             "description": "Boolean information whether power coefficient curve is available",
             "type": "boolean",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": null
           },
@@ -421,7 +421,7 @@
             "name": "power_coefficient_curve_wind_speeds",
             "description": "List of wind speeds in accordance with list of values for power coefficient curve. The two colums represent the power coefficient curve for each turbine",
             "type": "text",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": "m/s"
           },
@@ -429,7 +429,7 @@
             "name": "power_coefficient_curve_values",
             "description": "List of power coefficient values in accordance to wind speeds of power_coefficient_curve_wind_speeds",
             "type": "text",
-			"about": "OEO:00140051",
+			"is_about": "OEO:00140051",
 			"value_reference": null,
             "unit": "kW"
           },
@@ -437,7 +437,7 @@
             "name": "has_ct_curve",
             "description": "Boolean information whether thrust coefficient curve is available",
             "type": "boolean",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": null
           },
@@ -445,7 +445,7 @@
             "name": "thrust_coefficient_curve_wind_speeds",
             "description": "List of wind speeds in accordance with list of values for thrust coefficient curve. The two colums represent the thrust coefficient curve for each turbine",
             "type": "text",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": "m/s"
           },
@@ -453,7 +453,7 @@
             "name": "thrust_coefficient_curve_values",
             "description": "List of thrust coefficient values in accordance to wind speeds of thrust_coefficient_curve_wind_speeds",
             "type": "text",
-			"about": null,
+			"is_about": null,
 			"value_reference": null,
             "unit": "kW"
           },
@@ -461,7 +461,7 @@
             "name": "source",
             "description": "Source of the information within a particular row",
             "type": "text",
-			"about": "IAO:0000119",
+			"is_about": "IAO:0000119",
 			"value_reference": null,
             "unit": null
           }
