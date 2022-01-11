@@ -18,7 +18,7 @@ The requirement for uploading anything to the Databus is a Databus Account, you 
 ### Option 1: Using the Web UI
 
 The easiest way of deploying data to the Databus is by using the Web UI. It can be accessed [here](https://databus.dbpedia.org/system/upload) (for the new Databus version click [here](https://dev.databus.dbpedia.org/system/publish-wizard)).
-It provides a straightforward UI for filling out the necessary URIs and other parameters to generate the DataID.
+It provides a straightforward UI for filling out the necessary URIs and other parameters to generate the DataID (i.e., the data to be uploaded).
 
 
 ### Option 2: Using the API
