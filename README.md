@@ -12,12 +12,12 @@ This repository contains various examples for using the DBpedia Databus (https:/
 
 ## Uploading to the DBpedia Databus
 
-The requirement for uploading anything to the Databus is a Databus Account, you can create one at the [website](https://databus.dbpedia.org/auth/realms/databus/protocol/openid-connect/registrations?client_id=website&response_type=code&scope=openidemail&redirect_uri=https://databus.dbpedia.org&kc_locale=en) (for the new Databus version click [here](https://dev.databus.dbpedia.org/system/publish-wizard)).
+The requirement for uploading anything to the Databus is a Databus Account, you can create one at the [website](https://databus.dbpedia.org/auth/realms/databus/protocol/openid-connect/registrations?client_id=website&response_type=code&scope=openidemail&redirect_uri=https://databus.dbpedia.org&kc_locale=en) (newer version: https://dev.databus.dbpedia.org/).
 
 
 ### Option 1: Using the Web UI
 
-The easiest way of deploying data to the Databus is by using the Web UI. It can be accessed [here](https://databus.dbpedia.org/system/upload).
+The easiest way of deploying data to the Databus is by using the Web UI. It can be accessed [here](https://databus.dbpedia.org/system/upload) (for the new Databus version click [here](https://dev.databus.dbpedia.org/system/publish-wizard)).
 It provides a straightforward UI for filling out the necessary URIs and other parameters to generate the DataID.
 
 
