@@ -1,18 +1,18 @@
 # Databus Snippets
 
-This repository contains various examples for using the DBpedia Databus and its ecosystem in the context of the OEP.
+This repository contains various examples for using the DBpedia Databus (https://databus.dbpedia.org/ and its newer version https://dev.databus.dbpedia.org/) and its ecosystem in the context of the [Open Energy Platform](https://openenergy-platform.org/).
 
 ## Folders & Files
 
 - `databus_api_examples` contains examples of JSON-LD files required for submitting data to the Databus. [Here](#uploading-to-the-databus) is a guide how to submit data to the Databus.
 - `oep_metadata` contains a example of metadata about wind turbines (from [here](https://openenergy-platform.org/dataedit/view/supply/wind_turbine_library)) and an example how to convert the json file to JSON-LD.
-- `databus_api_example.py` is a script mimicking the functionality of the [web submit form](https://databus.dbpedia.org/system/upload).
+- `databus_api_example.py` and `dev_databus_api_example.py` (for the new Databus version) are scripts mimicking the functionality of the [web submit form](https://databus.dbpedia.org/system/upload).
 
 
 
 ## Uploading to the DBpedia Databus
 
-The requirement for uploading anything to the Databus is a Databus Account, you can create one at the [website](https://databus.dbpedia.org/auth/realms/databus/protocol/openid-connect/registrations?client_id=website&response_type=code&scope=openidemail&redirect_uri=https://databus.dbpedia.org&kc_locale=en).
+The requirement for uploading anything to the Databus is a Databus Account, you can create one at the [website](https://databus.dbpedia.org/auth/realms/databus/protocol/openid-connect/registrations?client_id=website&response_type=code&scope=openidemail&redirect_uri=https://databus.dbpedia.org&kc_locale=en) (for the new Databus version click [here](https://dev.databus.dbpedia.org/system/publish-wizard)).
 
 
 ### Option 1: Using the Web UI
@@ -25,12 +25,12 @@ It provides a straightforward UI for filling out the necessary URIs and other pa
 
 #### Step 1: Generating the DataID
 
-If you want to submit content via API you need to create the DataID yourself. An example for the DataID can either be seen in the third step of Option 1 or in the example files in this repository. There are wo seperate files:
+If you want to submit content via API you need to create the DataID yourself. An example for the DataID can either be seen in the third step of Option 1 or in the example files in this repository. There are two seperate files:
 
   - The `group-metadata`: This is only documentation for the group, no file information is included here. An example can be seen in `databus_api_examples/group_docu.jsonld`.
   - The actual `DataID`: This tells the Databus the necessary metadata to publish on the databus. An example for this can be seen in `databus_api_examples/dataid_example.jsonld`.
 
-The following table axplains the purpose and restrictions of the key in the JSON-LD file. It is based on the keys used in the examples in `databus_api_examples`. **NOTE**: The restrictions in this table are are currently more strict then the actual live tests (e.g. a group is with underscores would work), but this may change in the future and being a bit more strict then necessary is usually better.
+The following table axplains the purpose and restrictions of the key in the JSON-LD file. It is based on the keys used in the examples in `databus_api_examples`. **NOTE**: The restrictions in this table are currently more strict then the actual live tests (e.g. a group is with underscores would work), but this may change in the future and being a bit more strict then necessary is usually better.
 
 | Level | JSON key | Description | Restrictions |
 --- | --- | --- | ---
@@ -55,7 +55,7 @@ The following table axplains the purpose and restrictions of the key in the JSON
 
 #### Step 2: Deploying to the Databus
 
-For this another two Steps are required:
+For this another two steps are required:
 
 1. Fetching a Bearer Token from the Databus (URI: https://databus.dbpedia.org/auth/realms/databus/protocol/openid-connect/token). This can be done by setting the following HTTP headers in a GET request:
     - 'client_id': 'upload-api'
@@ -80,4 +80,4 @@ The Data is in both cases the fitting graph as JSON-LD. For testing with curl th
 
 ### Option 3: Using the python3 script
 
-A example implementation of using the API can be seen in `databus_api_example.py`. By modifying the variables below line `if __name__ == "__main__":` a dataid can easily be generated and deployed, similar to the WebUI.
+A example implementation of using the API can be seen in `databus_api_example.py` and `dev_databus_api_example.py` (for the new Databus version). By modifying the variables below line `if __name__ == "__main__":` a dataid can easily be generated and deployed, similar to the WebUI.
