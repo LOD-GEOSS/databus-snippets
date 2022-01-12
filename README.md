@@ -4,8 +4,8 @@ This repository contains various examples for using the DBpedia Databus (https:/
 
 ## Folders & Files
 
-- `databus_api_examples` contains examples of JSON-LD files required for submitting data to the Databus. [Here](#uploading-to-the-databus) is a guide how to submit data to the Databus.
-- `oep_metadata` contains a example of metadata about wind turbines (from [here](https://openenergy-platform.org/dataedit/view/supply/wind_turbine_library)) and an example how to convert the json file to JSON-LD.
+- `databus_api_examples` contains examples of JSON-LD files required for submitting data to the Databus.
+- `oep_metadata` contains an example of metadata about wind turbines (from [here](https://openenergy-platform.org/dataedit/view/supply/wind_turbine_library)) and an example how to convert the json file to JSON-LD.
 - `databus_api_example.py` and `dev_databus_api_example.py` (for the new Databus version) are scripts mimicking the functionality of the [web submit form](https://databus.dbpedia.org/system/upload).
 
 
