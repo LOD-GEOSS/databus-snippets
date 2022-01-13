@@ -204,7 +204,7 @@ def deploy_to_databus(user: str, passwd: str, *databus_objects):
         print(f"Response: Status {response.status_code}; Text: {response.text}")
 
 
-def deploy_to_dev_databus(user: str, api_key: str, *databus_objects):
+def deploy_to_dev_databus(api_key: str, *databus_objects):
 
     for dbobj in databus_objects:
         print(f"Deploying {dbobj.get_target_uri()}")
@@ -225,7 +225,7 @@ if __name__ == "__main__":
 
     artifact = "testartifact"
 
-    version = "2021-05-09"
+    version = "2022-01-13"
 
     title = "Test Title"
 
@@ -291,4 +291,4 @@ if __name__ == "__main__":
 
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
-    deploy_to_dev_databus(account_name, "some_mysterious_key", databus_group, databus_version)
+    deploy_to_dev_databus("some-mysterious-key", databus_group, databus_version)
