@@ -90,7 +90,7 @@ class DataVersion:
                 if not key in distinct_cv_definitions:
                     distinct_cv_definitions[key] = {
                         "@type": "rdf:Property",
-                        "@id": f"dataid-cv:{key}",
+                        "@id": f"dcv:{key}",
                         "rdfs:subPropertyOf": {"@id": "dataid:contentVariant"},
                     }
         return distinct_cv_definitions
@@ -111,7 +111,7 @@ class DataVersion:
             }
             for key, value in dbfile.cvs.items():
 
-                file_dst[f"dataid-cv:{key}"] = value
+                file_dst[f"dcv:{key}"] = value
 
             yield file_dst
 
@@ -225,7 +225,7 @@ if __name__ == "__main__":
 
     artifact = "testartifact"
 
-    version = "2022-01-13"
+    version = "2022-01-19"
 
     title = "Test Title"
 
@@ -291,4 +291,4 @@ if __name__ == "__main__":
 
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
-    deploy_to_dev_databus("some-mysterious-key", databus_group, databus_version)
+    deploy_to_dev_databus("api-key", databus_group, databus_version)
