@@ -8,6 +8,8 @@ from typing import List
 
 DATABUS_URI_BASE = "https://dev.databus.dbpedia.org"
 
+post_databus_uri = "https://dev.databus.dbpedia.org/system/publish"
+
 @dataclass
 class DataGroup:
     account_name: str
@@ -17,7 +19,7 @@ class DataGroup:
     comment: str
     abstract: str
     description: str
-    context: str = "https://raw.githubusercontent.com/dbpedia/databus-git-mockup/main/dev/context.jsonld"
+    context: str = "https://downloads.dbpedia.org/databus/context.jsonld"
 
     def get_target_uri(self) -> str:
 
@@ -75,7 +77,7 @@ class DataVersion:
     license: str
     databus_files: List[DatabusFile]
     issued: datetime = field(default_factory=datetime.now)
-    context: str = "https://raw.githubusercontent.com/dbpedia/databus-git-mockup/main/dev/context.jsonld"
+    context: str = "https://downloads.dbpedia.org/databus/context.jsonld"
 
     def get_target_uri(self):
 
@@ -101,13 +103,12 @@ class DataVersion:
             file_dst = {
                 "@id": self.version_uri + "#" + dbfile.id_string,
                 "file": self.version_uri + "/" + self.artifact + "_" + dbfile.id_string,
-                "@type": "dataid:SingleFile",
-                "formatExtension": dbfile.file_ext,
+                "@type": "dataid:Part",
+                "format": dbfile.file_ext,
                 "compression": "none",
                 "downloadURL": dbfile.uri,
                 "byteSize": dbfile.content_length,
                 "sha256sum": dbfile.sha256sum,
-                "hasVersion": self.version,
             }
             for key, value in dbfile.cvs.items():
 
@@ -217,6 +218,21 @@ def deploy_to_dev_databus(api_key: str, *databus_objects):
 
             print(f"Problematic file:\n {submission_data}")
 
+def deploy_to_dev_databus_post(api_key: str, *databus_objects):
+
+    for dbobj in databus_objects:
+        print(f"Deploying {dbobj.get_target_uri()}")
+        submission_data = dbobj.to_jsonld()
+
+        resp = requests.post(post_databus_uri, headers={"X-API-Key": api_key, "Content-Type": "application/json"}, data=submission_data)
+        
+        print(f"Response: Status {resp.status_code}; Text: {resp.text}")
+
+        if resp.status_code >= 400:
+            print(f"Response: Status {resp.status_code}; Text: {resp.text}")
+
+            print(f"Problematic file:\n {submission_data}")
+
 if __name__ == "__main__":
 
     account_name = "denis"
@@ -225,7 +241,7 @@ if __name__ == "__main__":
 
     artifact = "testartifact"
 
-    version = "2022-01-19"
+    version = "2022-01-20"
 
     title = "Test Title"
 
@@ -286,9 +302,12 @@ if __name__ == "__main__":
         description="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
     )
 
+
+    print(databus_group.to_jsonld())
+    print("\n\n\n", databus_version.to_jsonld())
     # for the current version of the databus
     # deploy_to_databus(account_name, "passwort", databus_group, databus_version)
 
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
-    deploy_to_dev_databus("api-key", databus_group, databus_version)
+    deploy_to_dev_databus_post("f4c9149b-2238-4c2e-8fa0-90851e02f6eb", databus_group, databus_version)
