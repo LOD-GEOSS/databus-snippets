@@ -275,4 +275,4 @@ if __name__ == "__main__":
 
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
-    deploy_to_dev_databus_post("my-key", databus_group, databus_version)
+    deploy_to_dev_databus_post(groupDataId["api_key"], databus_group, databus_version)

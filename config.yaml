@@ -1,4 +1,5 @@
 # add your group and dataset info below
+api_key: my-key
 group_info:
     account_name: denis
     label: Test Group
