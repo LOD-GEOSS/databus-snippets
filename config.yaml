@@ -1,0 +1,35 @@
+# add your group and dataset info below
+group_info:
+    account_name: denis
+    label: Test Group
+    title: Test Group
+    abstract: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+    comment: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+    description: Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+dataid_info:
+    group: general
+    artifact: testartifact
+    version: '2022-01-20'
+    title: Test Title
+    label: Test Label
+    comment: This is a short comment about the test.
+    abstract: This a short abstract for the dataset. Since this is only a test it is quite insignificant.
+    description: A bit longer description of the dataset.
+    license: http://this.is.a.license.uri.com/test
+    files:
+    - 
+        - https://yum-yab.github.io/data/databus-api-test/first/pizza-ont.owl
+        - 
+           type: ontology
+        - owl
+    - 
+        - https://yum-yab.github.io/data/databus-api-test/first/Sample500.csv
+        - 
+           type: randomData
+        - csv
+    - 
+        - https://openenergy-platform.org/api/v0/schema/supply/tables/wind_turbine_library/rows/
+        - 
+           type: turbineData
+           extra: external
+        - json

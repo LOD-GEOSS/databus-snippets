@@ -2,6 +2,7 @@ import requests
 import json
 import hashlib
 import sys
+import yaml
 from datetime import datetime
 from dataclasses import dataclass, field
 from typing import List
@@ -118,15 +119,15 @@ class DataVersion:
 
     def to_jsonld(self, **kwargs) -> str:
         self.version_uri = (
-            f"{DATABUS_URI_BASE}/{account_name}/{group}/{artifact}/{version}"
+            f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}/{self.artifact}/{self.version}"
         )
         self.data_id_uri = self.version_uri + "#Dataset"
 
         self.artifact_uri = (
-            f"{DATABUS_URI_BASE}/{account_name}/{group}/{artifact}"
+            f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}/{self.artifact}"
         )
 
-        self.group_uri = f"{DATABUS_URI_BASE}/{account_name}/{group}"
+        self.group_uri = f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}"
 
         self.timestamp = self.issued.strftime("%Y-%m-%dT%H:%M:%SZ")
 
@@ -234,74 +235,38 @@ def deploy_to_dev_databus_post(api_key: str, *databus_objects):
             print(f"Problematic file:\n {submission_data}")
 
 if __name__ == "__main__":
+    
+    with open('config.yaml') as file:
+        groupDataId = yaml.load(file, Loader=yaml.FullLoader)
 
-    account_name = "denis"
-
-    group = "general"
-
-    artifact = "testartifact"
-
-    version = "2022-01-20"
-
-    title = "Test Title"
-
-
-    # currently its advised to use the internal webid found at https://dev.databus.dbpedia.org/{{user}}#settings
-    publisher = "https://dev.databus.dbpedia.org/denis#this"
-
-    label = "Test Label"
-
-    comment = "This is a short comment about the test."
-
-    abstract = "This a short abstract for the dataset. Since this is only a test it is quite insignificant."
-
-    description = "A bit longer description of the dataset."
-
-    license = "http://this.is.a.license.uri.com/test"
-
-    files = [
-        DatabusFile(
-            "https://yum-yab.github.io/data/databus-api-test/first/pizza-ont.owl",
-            {"type": "ontology"},
-            "owl",
-        ),
-        DatabusFile(
-            "https://yum-yab.github.io/data/databus-api-test/first/Sample500.csv",
-            {"type": "randomData"},
-            "csv",
-        ),
-        DatabusFile(
-            "https://openenergy-platform.org/api/v0/schema/supply/tables/wind_turbine_library/rows/",
-            {"type": "turbineData", "extra": "external"},
-            "json",
-        ),
-    ]
+#    print(groupDataId)
+    databus_groupy = groupDataId["group_info"]
+    databus_versiony = groupDataId["dataid_info"]
 
     databus_version = DataVersion(
-        account_name=account_name,
-        group=group,
-        artifact=artifact,
-        version=version,
-        title=title,
-        publisher=publisher,
-        label=label,
-        comment=comment,
-        abstract=abstract,
-        description=description,
-        license=license,
-        databus_files=files,
+        account_name=databus_groupy["account_name"],
+        group=databus_versiony["group"],
+        artifact=databus_versiony["artifact"],
+        version=databus_versiony["version"],
+        title=databus_versiony["title"],
+        publisher=f"{DATABUS_URI_BASE}/{databus_groupy['account_name']}#this",
+        label=databus_versiony["label"],
+        comment=databus_versiony["comment"],
+        abstract=databus_versiony["abstract"],
+        description=databus_versiony["description"],
+        license=databus_versiony["license"],
+        databus_files=[DatabusFile(a, b, c) for a, b, c in databus_versiony["files"]],
     )
 
     databus_group = DataGroup(
-        account_name=account_name,
-        id=group,
-        label="Test Group",
-        title="Test Group",
-        abstract="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-        comment="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-        description="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
+        account_name=databus_groupy["account_name"],
+        id=databus_versiony["group"],
+        label=databus_groupy["label"],
+        title=databus_groupy["title"],
+        abstract=databus_groupy["abstract"],
+        comment=databus_groupy["comment"],
+        description=databus_groupy["description"],
     )
-
 
     print(databus_group.to_jsonld())
     print("\n\n\n", databus_version.to_jsonld())
@@ -310,4 +275,4 @@ if __name__ == "__main__":
 
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
-    deploy_to_dev_databus_post("f4c9149b-2238-4c2e-8fa0-90851e02f6eb", databus_group, databus_version)
+    deploy_to_dev_databus_post("my-key", databus_group, databus_version)
