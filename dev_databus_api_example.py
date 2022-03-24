@@ -6,17 +6,16 @@ from datetime import datetime
 from dataclasses import dataclass, field
 from typing import List
 
-DATABUS_URI_BASE = "https://dev.databus.dbpedia.org"
+DATABUS_URI_BASE = "https://energy.databus.dbpedia.org"
 
-post_databus_uri = "https://dev.databus.dbpedia.org/system/publish"
+post_databus_uri = "https://energy.databus.dbpedia.org/system/publish"
+
 
 @dataclass
 class DataGroup:
     account_name: str
     id: str
-    label: str
     title: str
-    comment: str
     abstract: str
     description: str
     context: str = "https://downloads.dbpedia.org/databus/context.jsonld"
@@ -36,11 +35,9 @@ class DataGroup:
                 {
                     "@id": group_uri,
                     "@type": "dataid:Group",
-                    "label": {"@value": self.label, "@language": "en"},
-                    "title": {"@value": self.title, "@language": "en"},
-                    "comment": {"@value": self.comment, "@language": "en"},
-                    "abstract": {"@value": self.abstract, "@language": "en"},
-                    "description": {"@value": self.description, "@language": "en"},
+                    "title": self.title,
+                    "abstract": self.abstract,
+                    "description": self.description,
                 }
             ],
         }
@@ -59,7 +56,8 @@ class DatabusFile:
         self.sha256sum = hashlib.sha256(bytes(resp.content)).hexdigest()
         self.content_length = str(len(resp.content))
         self.file_ext = file_ext
-        self.id_string = "_".join([f"{k}={v}" for k, v in cvs.items()]) + "." + file_ext
+        self.id_string = "_".join(
+            [f"{k}={v}" for k, v in cvs.items()]) + "." + file_ext
 
 
 @dataclass
@@ -69,9 +67,6 @@ class DataVersion:
     artifact: str
     version: str
     title: str
-    label: str
-    publisher: str
-    comment: str
     abstract: str
     description: str
     license: str
@@ -81,21 +76,7 @@ class DataVersion:
 
     def get_target_uri(self):
 
-        return f"https://dev.databus.dbpedia.org/{self.account_name}/{self.group}/{self.artifact}/{self.version}"
-
-    def __distinct_cvs(self) -> dict:
-
-        distinct_cv_definitions = {}
-        for dbfile in self.databus_files:
-            for key, value in dbfile.cvs.items():
-
-                if not key in distinct_cv_definitions:
-                    distinct_cv_definitions[key] = {
-                        "@type": "rdf:Property",
-                        "@id": f"dcv:{key}",
-                        "rdfs:subPropertyOf": {"@id": "dataid:contentVariant"},
-                    }
-        return distinct_cv_definitions
+        return f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}/{self.artifact}/{self.version}"
 
     def __dbfiles_to_dict(self):
 
@@ -104,7 +85,7 @@ class DataVersion:
                 "@id": self.version_uri + "#" + dbfile.id_string,
                 "file": self.version_uri + "/" + self.artifact + "_" + dbfile.id_string,
                 "@type": "dataid:Part",
-                "format": dbfile.file_ext,
+                "formatExtension": dbfile.file_ext,
                 "compression": "none",
                 "downloadURL": dbfile.uri,
                 "byteSize": dbfile.content_length,
@@ -136,33 +117,16 @@ class DataVersion:
                 {
                     "@type": "dataid:Dataset",
                     "@id": self.data_id_uri,
-                    "version": self.version_uri,
-                    "artifact": self.artifact_uri,
-                    "group": self.group_uri,
                     "hasVersion": self.version,
                     "issued": self.timestamp,
-                    "publisher": self.publisher,
-                    "label": {"@value": self.label, "@language": "en"},
-                    "title": {"@value": self.title, "@language": "en"},
-                    "comment": {"@value": self.comment, "@language": "en"},
-                    "abstract": {"@value": self.abstract, "@language": "en"},
-                    "description": {"@value": self.description, "@language": "en"},
-                    "license": {"@id": self.license},
+                    "title": self.title,
+                    "abstract": self.abstract,
+                    "description": self.description,
+                    "license": self.license,
                     "distribution": [d for d in self.__dbfiles_to_dict()],
                 }
             ],
         }
-
-        for _, named_cv_prop in self.__distinct_cvs().items():
-            data_id_dict["@graph"].append(named_cv_prop)
-
-        # add explicit artifact statement
-
-        data_id_dict["@graph"].append({"@id": self.get_target_uri().rsplit("/", 1)[0], "@type": "dataid:Artifact"})
-
-        # Explicit Version Statement
-        data_id_dict["@graph"].append({"@id": self.get_target_uri(), "@type": "dataid:Version"})
-
 
         return json.dumps(data_id_dict)
 
@@ -202,7 +166,8 @@ def deploy_to_databus(user: str, passwd: str, *databus_objects):
         response = requests.put(
             dbobj.get_target_uri(), headers=headers, data=dbobj.to_jsonld()
         )
-        print(f"Response: Status {response.status_code}; Text: {response.text}")
+        print(
+            f"Response: Status {response.status_code}; Text: {response.text}")
 
 
 def deploy_to_dev_databus(api_key: str, *databus_objects):
@@ -211,12 +176,14 @@ def deploy_to_dev_databus(api_key: str, *databus_objects):
         print(f"Deploying {dbobj.get_target_uri()}")
         submission_data = dbobj.to_jsonld()
 
-        resp = requests.put(dbobj.get_target_uri(), headers={"X-API-Key": api_key, "Content-Type": "application/json"}, data=submission_data)
+        resp = requests.put(dbobj.get_target_uri(), headers={
+                            "X-API-Key": api_key, "Content-Type": "application/json"}, data=submission_data)
 
         if resp.status_code >= 400:
             print(f"Response: Status {resp.status_code}; Text: {resp.text}")
 
             print(f"Problematic file:\n {submission_data}")
+
 
 def deploy_to_dev_databus_post(api_key: str, *databus_objects):
 
@@ -224,14 +191,16 @@ def deploy_to_dev_databus_post(api_key: str, *databus_objects):
         print(f"Deploying {dbobj.get_target_uri()}")
         submission_data = dbobj.to_jsonld()
 
-        resp = requests.post(post_databus_uri, headers={"X-API-Key": api_key, "Content-Type": "application/json"}, data=submission_data)
-        
+        resp = requests.post(post_databus_uri, headers={
+                             "X-API-Key": api_key, "Content-Type": "application/json"}, data=submission_data)
+
         print(f"Response: Status {resp.status_code}; Text: {resp.text}")
 
         if resp.status_code >= 400:
             print(f"Response: Status {resp.status_code}; Text: {resp.text}")
 
             print(f"Problematic file:\n {submission_data}")
+
 
 if __name__ == "__main__":
 
@@ -241,17 +210,9 @@ if __name__ == "__main__":
 
     artifact = "testartifact"
 
-    version = "2022-01-20"
+    version = "2022-03-03"
 
     title = "Test Title"
-
-
-    # currently its advised to use the internal webid found at https://dev.databus.dbpedia.org/{{user}}#settings
-    publisher = "https://dev.databus.dbpedia.org/denis#this"
-
-    label = "Test Label"
-
-    comment = "This is a short comment about the test."
 
     abstract = "This a short abstract for the dataset. Since this is only a test it is quite insignificant."
 
@@ -283,9 +244,6 @@ if __name__ == "__main__":
         artifact=artifact,
         version=version,
         title=title,
-        publisher=publisher,
-        label=label,
-        comment=comment,
         abstract=abstract,
         description=description,
         license=license,
@@ -295,19 +253,17 @@ if __name__ == "__main__":
     databus_group = DataGroup(
         account_name=account_name,
         id=group,
-        label="Test Group",
         title="Test Group",
         abstract="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
-        comment="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
         description="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.",
     )
 
-
-    print(databus_group.to_jsonld())
-    print("\n\n\n", databus_version.to_jsonld())
+    # print(databus_group.to_jsonld())
+    # print("\n\n\n", databus_version.to_jsonld())
     # for the current version of the databus
-    # deploy_to_databus(account_name, "passwort", databus_group, databus_version)
+    # deploy_to_databus(account_name, "af30133c-9f74-4619-9b71-fff56fbc22c0", databus_group, databus_version)
 
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
-    deploy_to_dev_databus_post("f4c9149b-2238-4c2e-8fa0-90851e02f6eb", databus_group, databus_version)
+    deploy_to_dev_databus(
+        "mystery-key", databus_group, databus_version)
