@@ -218,9 +218,6 @@ if __name__ == "__main__":
         artifact=databus_versiony["artifact"],
         version=databus_versiony["version"],
         title=databus_versiony["title"],
-        publisher=f"{DATABUS_URI_BASE}/{databus_groupy['account_name']}#this",
-        label=databus_versiony["label"],
-        comment=databus_versiony["comment"],
         abstract=databus_versiony["abstract"],
         description=databus_versiony["description"],
         license=databus_versiony["license"],
@@ -230,10 +227,8 @@ if __name__ == "__main__":
     databus_group = DataGroup(
         account_name=databus_groupy["account_name"],
         id=databus_versiony["group"],
-        label=databus_groupy["label"],
         title=databus_groupy["title"],
         abstract=databus_groupy["abstract"],
-        comment=databus_groupy["comment"],
         description=databus_groupy["description"],
     )
 
