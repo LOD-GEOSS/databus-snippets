@@ -80,4 +80,4 @@ The Data is in both cases the fitting graph as JSON-LD. For testing with curl th
 
 ### Option 3: Using the python3 script
 
-An example implementation of using the API can be seen in `databus_api_example.py` and `dev_databus_api_example.py` (for the new Databus version). By modifying the variables below line `if __name__ == "__main__":` a DataID can easily be generated and deployed, similar to the WebUI.
+An example implementation of using the API can be seen in `databus_api_example.py`. By modifying the variables below line `if __name__ == "__main__":` a DataID can easily be generated and deployed, similar to the WebUI. For the new Databus version the process is slightly different. Instead of modifying the hard-coded variables in a python script you simly modify the contents of `config.yaml` and then run `dev_databus_api_example.py`.
