@@ -208,7 +208,6 @@ if __name__ == "__main__":
     with open('config.yaml') as file:
         groupDataId = yaml.load(file, Loader=yaml.FullLoader)
 
-#    print(groupDataId)
     databus_groupy = groupDataId["group_info"]
     databus_versiony = groupDataId["dataid_info"]
 
@@ -237,5 +236,5 @@ if __name__ == "__main__":
 
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
-    deploy_to_dev_databus_post(groupDataId["api_key"], databus_group, databus_version)
+    deploy_to_dev_databus(groupDataId["api_key"], databus_group, databus_version)
 
