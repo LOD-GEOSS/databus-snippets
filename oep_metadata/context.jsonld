@@ -51,6 +51,10 @@
         "about": {
             "@id": "obo:IAO_0000136",
             "@type": "@id"
+        },
+        "software": {
+            "@id": "obo:IAO_0000010",
+            "@type": "@id"
         }
     }
 }

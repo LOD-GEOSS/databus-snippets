@@ -1,0 +1,210 @@
+{
+ "@context": "https://raw.githubusercontent.com/LOD-GEOSS/databus-snippets/master/oep_metadata/context.jsonld",
+ "name": "rli_dea_td_generation_wind_turbine",
+ "title": "RLI - Danish Energy Agency - Technology Data for Generation of Electricity and District Heating - Technology Data Catalogue for Electricity and district heating production - Updated April 2020 - Wind Turbine (Selected Parameter)",
+ "id": "http://openenergyplatform.org/dataedit/view/model_draft/rli_dea_td_generation_wind_turbine",
+ "@id": "https://energy.databus.dbpedia.org/henhuy/DEA/wind_turbine_generation/2022-04-05/wind_turbine_generation_scenario=225.csv",
+ "description": "This Technology Data catalogue includes technology data for technologies for centralized and decentralized production of electricity and district heat. Technology data concerns more or less mature technologies. There is currently one combined Technology Data catalogue concerning generation of electricity and district heating.  The catalogue was first published in August 2016, and is updated continuously. Technology descriptions in the previous catalogue from May 2012 have now been included in the catalogue from 2016 although some are not updated since 2015. It is mentioned in the beginning of the specific chapters, when each technology has been updated the last time. Index: 20 Wind turbines on-shore (updated May 2019) On-shore turbines and Domestic turbines. 21 Wind turbines off-shore (updated May 2019) Off-shore turbines and Near shore turbines (minor adjustment September 2019).",
+ "subject": "OEO:00000448",
+ "keywords": [
+  "RLI",
+  "Danish Energy Agency",
+  "Technology Data Catalogue",
+  "wind turbine",
+  "onshore",
+  "offshore"
+ ],
+ "publicationDate": "2022-02-11",
+ "context": {
+  "homepage": "https://reiner-lemoine-institut.de/lod-geoss/",
+  "sourceCode": "https://github.com/LOD-GEOSS",
+  "contact": "https://github.com/Ludee",
+  "grantNo": "03EI1005D",
+  "fundingAgency": "Bundesministerium für Wirtschaft und Klimaschutz",
+  "fundingAgencyLogo": "https://commons.wikimedia.org/wiki/File:BMWi_Logo_2021.svg#/media/File:BMWi_Logo_2021.svg",
+  "publisherLogo": "https://reiner-lemoine-institut.de//wp-content/uploads/2015/09/rlilogo.png"
+ },
+ "spatial": {
+  "extent": "europe",
+  "resolution": "100 m"
+ },
+ "temporal": {
+  "timeseries": {}
+ },
+ "review": {
+  "path": "https://github.com/OpenEnergyPlatform/data-preprocessing/issues/92",
+  "badge": "Platinum"
+ },
+ "_comment": {
+  "metadata": "Metadata documentation and explanation (https://github.com/OpenEnergyPlatform/oemetadata)",
+  "dates": "Dates and time must follow the ISO8601 including time zone (YYYY-MM-DD or YYYY-MM-DDThh:mm:ss±hh)",
+  "units": "Use a space between numbers and units (100 m)",
+  "languages": "Languages must follow the IETF (BCP47) format (en-GB, en-US, de-DE)",
+  "licenses": "License name must follow the SPDX License List (https://spdx.org/licenses/)",
+  "review": "Following the OEP Data Review (https://github.com/OpenEnergyPlatform/data-preprocessing/blob/master/data-review/manual/review_manual.md)",
+  "null": "If not applicable use: null"
+ },
+ "language": [
+  "en-GB"
+ ],
+ "sources": [
+  {
+   "title": "Danish Energy Agency - Technology Data",
+   "description": "The Danish Energy Agency and Energinet publish catalogues of technology data for energy technologies. Technology Data provides information about technology, economy and environment for a number of energy installations and are among other things used by the Danish Energy Agency for energy projections. ",
+   "path": "https://ens.dk/en/our-services/projections-and-models/technology-data",
+   "licenses": [
+    {
+     "attribution": "© Danish Energy Agency 2021"
+    }
+   ]
+  },
+  {
+   "title": "Danish Energy Agency - Technology Data for Generation of Electricity and District Heating",
+   "description": "TThis Technology Data catalogue includes technology data for technologies for centralized and decentralized production of electricity and district heat. Technology data concerns more or less mature technologies. ",
+   "path": "https://ens.dk/en/our-services/projections-and-models/technology-data/technology-data-generation-electricity-and",
+   "licenses": [
+    {
+     "attribution": "© Danish Energy Agency 2021"
+    }
+   ]
+  },
+  {
+   "title": "Technology Data Catalogue for Electricity and district heating production - Updated April 2020",
+   "description": "Data collection for electricity generation and district heating plants, last update: April 2020",
+   "path": "https://ens.dk/sites/ens.dk/files/Analyser/technology_data_for_el_and_dh.xlsx",
+   "licenses": [
+    {
+     "attribution": "© Danish Energy Agency 2021"
+    }
+   ]
+  }
+ ],
+ "licenses": [
+  {
+   "instruction": "You are free: To Share, To Create, To Adapt; As long as you: Attribute! See: https://tldrlegal.com/license/creative-commons-attribution-4.0-international-(cc-by-4)",
+   "attribution": "© Reiner Lemoine Institut",
+   "name": "CC-BY-4.0",
+   "title": "Creative Commons Attribution 4.0 International",
+   "path": "https://creativecommons.org/licenses/by/4.0/legalcode"
+  }
+ ],
+ "contributors": [
+  {
+   "title": "Christoph Muschner",
+   "email": "christoph.muschner@rl-institut.de",
+   "object": "metadata",
+   "comment": "Transpose the original table. ",
+   "date": "2021-06-29"
+  },
+  {
+   "title": "ludee",
+   "email": "datenzentrum@rl-institut.de",
+   "object": "metadata",
+   "comment": "Create file with new columns. ",
+   "date": "2022-02-11"
+  },
+  {
+   "title": "ludee",
+   "email": "datenzentrum@rl-institut.de",
+   "object": "metadata",
+   "comment": "Update to OEMetadata version 1.5.0",
+   "date": "2022-02-11"
+  },
+  {
+   "title": "ludee",
+   "email": "datenzentrum@rl-institut.de",
+   "object": "metadata",
+   "comment": "Update to OEMetadata version 1.5.1",
+   "date": "2022-02-15"
+  }
+ ],
+ "resources": [
+  {
+   "profile": "tabular-data-resource",
+   "name": "model_draft.rli_dea_td_generation_wind_turbine",
+   "path": "https://openenergy-platform.org/dataedit/view/model_draft/rli_dea_td_generation_wind_turbine",
+   "format": "PostgreSQL",
+   "encoding": "UTF-8",
+   "schema": {
+    "primaryKey": [
+     "id"
+    ],
+    "foreignKeys": [],
+    "fields": [
+     {
+      "name": "id",
+      "description": "Unique identifier",
+      "type": "bigint"
+     },
+     {
+      "name": "model",
+      "description": "Model name",
+      "type": "text",
+      "is_about": "IAO:0000421"
+     },
+     {
+      "name": "scenario",
+      "description": "Contains information about technology data and year, beginning from 2015 until 2050",
+      "type": "text"
+     },
+     {
+      "name": "region",
+      "description": "Region to which the data applies",
+      "type": "text"
+     },
+     {
+      "name": "type",
+      "description": "Type of wind turbine",
+      "type": "text"
+     },
+     {
+      "name": "year",
+      "description": "Reference year",
+      "type": "bigint"
+     },
+     {
+      "name": "generating_capacity",
+      "description": "Generation capacity for one unit of the technology",
+      "type": "numeric",
+      "unit": "MW"
+     },
+     {
+      "name": "full_load_hours",
+      "description": "Average annual full load hours of the technology",
+      "type": "bigint",
+      "unit": "h"
+     },
+     {
+      "name": "nominal_investment",
+      "description": "Nominal investment of the technology",
+      "type": "numeric",
+      "unit": "M€/MW"
+     },
+     {
+      "name": "rotor_diameter",
+      "description": "Rotor diameter of the wind turbine",
+      "type": "bigint",
+      "unit": "m"
+     },
+     {
+      "name": "hub_hight",
+      "description": "Hub hight of the wind turbine",
+      "type": "bigint",
+      "unit": "m"
+     }
+    ]
+   },
+   "dialect": {
+    "decimalSeparator": "."
+   }
+  }
+ ],
+ "metaMetadata": {
+  "metadataVersion": "OEP-1.4.0",
+  "metadataLicense": {
+   "name": "CC0-1.0",
+   "title": "Creative Commons Zero v1.0 Universal",
+   "path": "https://creativecommons.org/publicdomain/zero/1.0/"
+  }
+ }
+}
