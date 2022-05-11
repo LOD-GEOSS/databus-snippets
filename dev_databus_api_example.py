@@ -2,7 +2,6 @@ import os
 import requests
 import json
 import hashlib
-import sys
 import yaml
 from datetime import datetime
 from dataclasses import dataclass, field
@@ -25,6 +24,18 @@ class DataGroup:
     abstract: str
     description: str
     context: str = DEFAULT_CONTEXT
+
+    @classmethod
+    def from_yaml(cls, yaml_path):
+        with open(yaml_path) as yaml_file:
+            data = yaml.load(yaml_file, Loader=yaml.FullLoader)
+            return cls(
+                account_name=ACCOUNT_NAME,
+                id=data["group"],
+                title=data["title"],
+                abstract=data["abstract"],
+                description=data["description"],
+            )
 
     def get_target_uri(self) -> str:
         return f"{DATABUS_URI_BASE}/{self.account_name}/{self.id}"
@@ -86,6 +97,22 @@ class DataVersion:
         self.group_uri = f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}"
         self.timestamp = self.issued.strftime("%Y-%m-%dT%H:%M:%SZ")
 
+    @classmethod
+    def from_yaml(cls, yaml_path):
+        with open(yaml_path) as yaml_file:
+            data = yaml.load(yaml_file, Loader=yaml.FullLoader)
+            return cls(
+                account_name=ACCOUNT_NAME,
+                group=data["group"],
+                artifact=data["artifact"],
+                version=data["version"],
+                title=data["title"],
+                abstract=data["abstract"],
+                description=data["description"],
+                license=data["license"],
+                databus_files=[DatabusFile(a, b, c) for a, b, c in data["files"]],
+            )
+
     def get_target_uri(self):
         return f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}/{self.artifact}/{self.version}"
 
@@ -146,32 +173,8 @@ def deploy_to_databus(api_key: str, *databus_objects):
 
 
 if __name__ == "__main__":
-
-    with open("config.yaml") as file:
-        groupDataId = yaml.load(file, Loader=yaml.FullLoader)
-
-    databus_groupy = groupDataId["group_info"]
-    databus_versiony = groupDataId["dataid_info"]
-
-    databus_version = DataVersion(
-        account_name=ACCOUNT_NAME,
-        group=databus_versiony["group"],
-        artifact=databus_versiony["artifact"],
-        version=databus_versiony["version"],
-        title=databus_versiony["title"],
-        abstract=databus_versiony["abstract"],
-        description=databus_versiony["description"],
-        license=databus_versiony["license"],
-        databus_files=[DatabusFile(a, b, c) for a, b, c in databus_versiony["files"]],
-    )
-
-    databus_group = DataGroup(
-        account_name=ACCOUNT_NAME,
-        id=databus_versiony["group"],
-        title=databus_groupy["title"],
-        abstract=databus_groupy["abstract"],
-        description=databus_groupy["description"],
-    )
+    databus_group = DataGroup.from_yaml("example/group.yaml")
+    databus_version = DataVersion.from_yaml("example/data.yaml")
 
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
