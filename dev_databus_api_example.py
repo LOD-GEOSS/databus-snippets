@@ -127,45 +127,7 @@ class DataVersion:
         return json.dumps(data_id_dict)
 
 
-def deploy_to_databus(user: str, passwd: str, *databus_objects):
-    try:
-        # Request data for bearer token
-        data = {
-            "client_id": "upload-api",
-            "username": user,
-            "password": passwd,
-            "grant_type": "password",
-        }
-
-        # requesting the bearer token and saving it in a variable
-        print("Accessing new token...")
-        token_response = requests.post(
-            "https://databus.dbpedia.org/auth/realms/databus/protocol/openid-connect/token",
-            data=data,
-        )
-        print(f"Response: Status {token_response.status_code}")
-
-        token = token_response.json()["access_token"]
-
-    except Exception as e:
-        print(f"Error requesting token: {str(e)}")
-        sys.exit(1)
-
-    for dbobj in databus_objects:
-        # send the dataid as JSON-LD to the target
-        # The Authorisation header must be set with "Bearer $TOKEN"
-        # https://databus.dbpedia.org/account/group for group metadata
-        # https://databus.dbpedia.org/account/group/artifact/version for Databus version
-        headers = {"Authorization": f"Bearer {token}"}
-
-        print(f"Deploying {dbobj.get_target_uri()}")
-        response = requests.put(
-            dbobj.get_target_uri(), headers=headers, data=dbobj.to_jsonld()
-        )
-        print(f"Response: Status {response.status_code}; Text: {response.text}")
-
-
-def deploy_to_dev_databus(api_key: str, *databus_objects):
+def deploy_to_databus(api_key: str, *databus_objects):
 
     for dbobj in databus_objects:
         print(f"Deploying {dbobj.get_target_uri()}")
@@ -176,26 +138,6 @@ def deploy_to_dev_databus(api_key: str, *databus_objects):
             headers={"X-API-Key": api_key, "Content-Type": "application/json"},
             data=submission_data,
         )
-
-        if resp.status_code >= 400:
-            print(f"Response: Status {resp.status_code}; Text: {resp.text}")
-
-            print(f"Problematic file:\n {submission_data}")
-
-
-def deploy_to_dev_databus_post(api_key: str, *databus_objects):
-
-    for dbobj in databus_objects:
-        print(f"Deploying {dbobj.get_target_uri()}")
-        submission_data = dbobj.to_jsonld()
-
-        resp = requests.post(
-            post_databus_uri,
-            headers={"X-API-Key": api_key, "Content-Type": "application/json"},
-            data=submission_data,
-        )
-
-        print(f"Response: Status {resp.status_code}; Text: {resp.text}")
 
         if resp.status_code >= 400:
             print(f"Response: Status {resp.status_code}; Text: {resp.text}")
@@ -231,9 +173,6 @@ if __name__ == "__main__":
         description=databus_groupy["description"],
     )
 
-    # for the current version of the databus
-    # deploy_to_databus(account_name, "af30133c-9f74-4619-9b71-fff56fbc22c0", databus_group, databus_version)
-
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
-    deploy_to_dev_databus(API_KEY, databus_group, databus_version)
+    deploy_to_databus(API_KEY, databus_group, databus_version)
