@@ -9,6 +9,7 @@ from dataclasses import dataclass, field
 from typing import List
 
 DATABUS_URI_BASE = "https://energy.databus.dbpedia.org"
+DEFAULT_CONTEXT = "https://downloads.dbpedia.org/databus/context.jsonld"
 
 post_databus_uri = "https://energy.databus.dbpedia.org/system/publish"
 
@@ -23,17 +24,15 @@ class DataGroup:
     title: str
     abstract: str
     description: str
-    context: str = "https://downloads.dbpedia.org/databus/context.jsonld"
+    context: str = DEFAULT_CONTEXT
 
     def get_target_uri(self) -> str:
-
         return f"{DATABUS_URI_BASE}/{self.account_name}/{self.id}"
 
     def to_jsonld(self) -> str:
         """Generates the json representation of group documentation"""
 
         group_uri = f"{DATABUS_URI_BASE}/{self.account_name}/{self.id}"
-
         group_data_dict = {
             "@context": self.context,
             "@graph": [
@@ -61,8 +60,7 @@ class DatabusFile:
         self.sha256sum = hashlib.sha256(bytes(resp.content)).hexdigest()
         self.content_length = str(len(resp.content))
         self.file_ext = file_ext
-        self.id_string = "_".join(
-            [f"{k}={v}" for k, v in cvs.items()]) + "." + file_ext
+        self.id_string = "_".join([f"{k}={v}" for k, v in cvs.items()]) + "." + file_ext
 
 
 @dataclass
@@ -77,18 +75,25 @@ class DataVersion:
     license: str
     databus_files: List[DatabusFile]
     issued: datetime = field(default_factory=datetime.now)
-    context: str = "https://downloads.dbpedia.org/databus/context.jsonld"
+    context: str = DEFAULT_CONTEXT
+
+    def __post_init__(self):
+        self.version_uri = f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}/{self.artifact}/{self.version}"
+        self.data_id_uri = f"{self.version_uri}#Dataset"
+        self.artifact_uri = (
+            f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}/{self.artifact}"
+        )
+        self.group_uri = f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}"
+        self.timestamp = self.issued.strftime("%Y-%m-%dT%H:%M:%SZ")
 
     def get_target_uri(self):
-
         return f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}/{self.artifact}/{self.version}"
 
     def __dbfiles_to_dict(self):
-
         for dbfile in self.databus_files:
             file_dst = {
-                "@id": self.version_uri + "#" + dbfile.id_string,
-                "file": self.version_uri + "/" + self.artifact + "_" + dbfile.id_string,
+                "@id": f"{self.version_uri}#{dbfile.id_string}",
+                "file": f"{self.version_uri}/{self.artifact}_{dbfile.id_string}",
                 "@type": "dataid:Part",
                 "formatExtension": dbfile.file_ext,
                 "compression": "none",
@@ -96,26 +101,13 @@ class DataVersion:
                 "byteSize": dbfile.content_length,
                 "sha256sum": dbfile.sha256sum,
             }
-            for key, value in dbfile.cvs.items():
 
+            for key, value in dbfile.cvs.items():
                 file_dst[f"dcv:{key}"] = value
 
             yield file_dst
 
-    def to_jsonld(self, **kwargs) -> str:
-        self.version_uri = (
-            f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}/{self.artifact}/{self.version}"
-        )
-        self.data_id_uri = self.version_uri + "#Dataset"
-
-        self.artifact_uri = (
-            f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}/{self.artifact}"
-        )
-
-        self.group_uri = f"{DATABUS_URI_BASE}/{self.account_name}/{self.group}"
-
-        self.timestamp = self.issued.strftime("%Y-%m-%dT%H:%M:%SZ")
-
+    def to_jsonld(self) -> str:
         data_id_dict = {
             "@context": self.context,
             "@graph": [
@@ -128,11 +120,10 @@ class DataVersion:
                     "abstract": self.abstract,
                     "description": self.description,
                     "license": self.license,
-                    "distribution": [d for d in self.__dbfiles_to_dict()],
+                    "distribution": list(self.__dbfiles_to_dict()),
                 }
             ],
         }
-
         return json.dumps(data_id_dict)
 
 
@@ -165,14 +156,13 @@ def deploy_to_databus(user: str, passwd: str, *databus_objects):
         # The Authorisation header must be set with "Bearer $TOKEN"
         # https://databus.dbpedia.org/account/group for group metadata
         # https://databus.dbpedia.org/account/group/artifact/version for Databus version
-        headers = {"Authorization": "Bearer " + token}
+        headers = {"Authorization": f"Bearer {token}"}
 
         print(f"Deploying {dbobj.get_target_uri()}")
         response = requests.put(
             dbobj.get_target_uri(), headers=headers, data=dbobj.to_jsonld()
         )
-        print(
-            f"Response: Status {response.status_code}; Text: {response.text}")
+        print(f"Response: Status {response.status_code}; Text: {response.text}")
 
 
 def deploy_to_dev_databus(api_key: str, *databus_objects):
@@ -181,8 +171,11 @@ def deploy_to_dev_databus(api_key: str, *databus_objects):
         print(f"Deploying {dbobj.get_target_uri()}")
         submission_data = dbobj.to_jsonld()
 
-        resp = requests.put(dbobj.get_target_uri(), headers={
-                            "X-API-Key": api_key, "Content-Type": "application/json"}, data=submission_data)
+        resp = requests.put(
+            dbobj.get_target_uri(),
+            headers={"X-API-Key": api_key, "Content-Type": "application/json"},
+            data=submission_data,
+        )
 
         if resp.status_code >= 400:
             print(f"Response: Status {resp.status_code}; Text: {resp.text}")
@@ -196,8 +189,11 @@ def deploy_to_dev_databus_post(api_key: str, *databus_objects):
         print(f"Deploying {dbobj.get_target_uri()}")
         submission_data = dbobj.to_jsonld()
 
-        resp = requests.post(post_databus_uri, headers={
-                             "X-API-Key": api_key, "Content-Type": "application/json"}, data=submission_data)
+        resp = requests.post(
+            post_databus_uri,
+            headers={"X-API-Key": api_key, "Content-Type": "application/json"},
+            data=submission_data,
+        )
 
         print(f"Response: Status {resp.status_code}; Text: {resp.text}")
 
@@ -208,8 +204,8 @@ def deploy_to_dev_databus_post(api_key: str, *databus_objects):
 
 
 if __name__ == "__main__":
-    
-    with open('config.yaml') as file:
+
+    with open("config.yaml") as file:
         groupDataId = yaml.load(file, Loader=yaml.FullLoader)
 
     databus_groupy = groupDataId["group_info"]
@@ -241,4 +237,3 @@ if __name__ == "__main__":
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
     deploy_to_dev_databus(API_KEY, databus_group, databus_version)
-
