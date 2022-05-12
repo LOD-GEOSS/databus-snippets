@@ -1,3 +1,4 @@
+import os
 import requests
 import json
 import hashlib
@@ -10,6 +11,9 @@ from typing import List
 DATABUS_URI_BASE = "https://energy.databus.dbpedia.org"
 
 post_databus_uri = "https://energy.databus.dbpedia.org/system/publish"
+
+API_KEY = os.environ["DATABUS_API_KEY"]
+ACCOUNT_NAME = os.environ["DATABUS_ACCOUNT_NAME"]
 
 
 @dataclass
@@ -212,7 +216,7 @@ if __name__ == "__main__":
     databus_versiony = groupDataId["dataid_info"]
 
     databus_version = DataVersion(
-        account_name=databus_groupy["account_name"],
+        account_name=ACCOUNT_NAME,
         group=databus_versiony["group"],
         artifact=databus_versiony["artifact"],
         version=databus_versiony["version"],
@@ -224,7 +228,7 @@ if __name__ == "__main__":
     )
 
     databus_group = DataGroup(
-        account_name=databus_groupy["account_name"],
+        account_name=ACCOUNT_NAME,
         id=databus_versiony["group"],
         title=databus_groupy["title"],
         abstract=databus_groupy["abstract"],
@@ -236,5 +240,5 @@ if __name__ == "__main__":
 
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
-    deploy_to_dev_databus(groupDataId["api_key"], databus_group, databus_version)
+    deploy_to_dev_databus(API_KEY, databus_group, databus_version)
 
