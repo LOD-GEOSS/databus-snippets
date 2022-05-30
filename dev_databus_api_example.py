@@ -16,6 +16,10 @@ API_KEY = os.environ["DATABUS_API_KEY"]
 ACCOUNT_NAME = os.environ["DATABUS_ACCOUNT_NAME"]
 
 
+class DatabusError(Exception):
+    """Raised if deployment goes wrong"""
+
+
 @dataclass
 class DataGroup:
     account_name: str
@@ -166,10 +170,10 @@ def deploy_to_databus(api_key: str, databus_object):
         data=submission_data,
     )
 
-        if resp.status_code >= 400:
-            print(f"Response: Status {resp.status_code}; Text: {resp.text}")
-
-            print(f"Problematic file:\n {submission_data}")
+    if resp.status_code >= 400:
+        print(f"Response: Status {resp.status_code}; Text: {resp.text}")
+        print(f"Problematic file:\n {submission_data}")
+        raise DatabusError(f"Could not deploy '{target}'")
 
 
 if __name__ == "__main__":
