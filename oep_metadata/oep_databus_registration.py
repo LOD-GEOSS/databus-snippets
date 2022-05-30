@@ -24,6 +24,7 @@ OEP_FOLDER = pathlib.Path(__file__).parent
 OEP_URL = "https://openenergy-platform.org"
 
 GROUP = "OEP"
+GROUP_YAML = OEP_FOLDER / "oep_group.yaml"
 
 SCHEMAS = [
     "boundaries",
@@ -62,7 +63,7 @@ def get_table_meta(schema, table):
 
 
 def create_databus_group():
-    databus_group = DataGroup.from_yaml(OEP_FOLDER / "oep_group.yaml")
+    databus_group = DataGroup.from_yaml(GROUP_YAML)
     databus_group.id = GROUP
     deploy_to_databus(API_KEY, databus_group)
 
