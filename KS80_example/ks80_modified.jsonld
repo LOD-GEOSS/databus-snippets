@@ -1,0 +1,168 @@
+{
+ "@context": "https://raw.githubusercontent.com/LOD-GEOSS/databus-snippets/master/oep_metadata/context.jsonld",
+ "name": "ksz2050_r2_ks80_co2_emissions_industrial_processes",
+ "title": "Projections of CO2 emission from industrial processes in scenario KS80",
+ "id": "http://openenergyplatform.org/dataedit/view/model_draft/ksz2050_r2_KS80_co2_emissions_industrial_processes",
+ "description": "This table holds CO2 emissions projections of the KS80 split by source categories. The data corresponds to the data in table 6-2 of the report.",
+ "keywords": [
+  "Öko-Institut",
+  "KSz 2050",
+  "Germany",
+  "GHG emissions",
+  "CO2",
+  "Industry",
+  "Industrial processes"
+ ],
+ "context": {
+  "homepage": "https://www.klimaschutzszenario2050.de",
+  "documentation": "https://www.oeko.de/oekodoc/2451/2015-608-de.pdf",
+  "sourceCode": "not available",
+  "contact": "oedb@oeko.de",
+  "grantNo": "03KSE031",
+  "fundingAgency": "Diese Daten wurden im Auftrag des Bundesministeriums für Umwelt, Naturschutz und nukleare Sicherheit erstellt",
+  "fundingAgencyLogo": "https://upload.wikimedia.org/wikipedia/commons/b/b1/Logo_Bundesministerium_f%C3%BCr_Umwelt_Naturschutz_und_nukleare_Sicherheit.png",
+  "publisherLogo": "https://www.oeko.de/fileadmin/templates/oeko/Resources/Public/images/logo.svg"
+ },
+ "spatial": {
+  "extent": "Germany"
+ },
+ "temporal": {
+  "timeseries": {
+   "start": "2020-01-01T00:00+01",
+   "end": "2050-01-01T00:00+01",
+   "resolution": "10 a",
+   "alignment": "left"
+  }
+ },
+ "review": {
+  "path": "https://github.com/OpenEnergyPlatform/data-preprocessing/issues/27",
+  "badge": null
+ },
+ "_comment": {
+  "metadata": "Metadata documentation and explanation (https://github.com/OpenEnergyPlatform/organisation/wiki/metadata)",
+  "dates": "Dates and time must follow the ISO8601 including time zone (YYYY-MM-DD or YYYY-MM-DDThh:mm:ss±hh)",
+  "units": "Use a space between numbers and units (100 m)",
+  "languages": "Languages must follow the IETF (BCP47) format (en-GB, en-US, de-DE)",
+  "licenses": "License name must follow the SPDX License List (https://spdx.org/licenses/)",
+  "review": "Following the OEP Data Review (https://github.com/OpenEnergyPlatform/data-preprocessing/wiki)",
+  "null": "If not applicable use (null)"
+ },
+ "language": [
+  "en-GB"
+ ],
+ "sources": [
+  {
+   "title": "Own projection",
+   "description": "Details see report provided under URL",
+   "path": "https://www.oeko.de/publikationen/p-details/klimaschutzszenario-2050-2-endbericht",
+   "licenses": []
+  }
+ ],
+ "licenses": [
+  {
+   "instruction": "https://www.govdata.de/dl-de/by-2-0",
+   "attribution": "© Öko-Institut",
+   "name": "dl-de-by-2.0",
+   "title": "Data licence Germany – attribution – version 2.0",
+   "path": "https://www.govdata.de/dl-de/by-2-0"
+  }
+ ],
+ "contributors": [
+  {
+   "title": "Öko-Institut",
+   "email": "oedb@oeko.de",
+   "object": "metadata",
+   "comment": "Initial version",
+   "date": "2019-06-26"
+  },
+  {
+   "title": "Öko-Institut",
+   "email": "oedb@oeko.de",
+   "object": "metadata",
+   "comment": "Fixed small typos and urls",
+   "date": "2021-01-07"
+  },
+  {
+   "title": "Öko-Institut",
+   "email": "oedb@oeko.de",
+   "object": "tags",
+   "comment": "add further tags",
+   "date": "2021-02-17"
+  }
+ ],
+ "resources": [
+  {
+   "profile": "tabular-data-resource",
+   "name": "ksz2050_r2_ks80_co2_emissions_industrial_processes",
+   "path": "https://github.com/OpenEnergyPlatform/examples/tree/master/metadata",
+   "format": "PostgreSQL",
+   "encoding": "UTF-8",
+   "schema": {
+    "primaryKey": [
+     "id"
+    ],
+    "foreignKeys": [
+     {
+      "fields": [
+       "year"
+      ],
+      "reference": {
+       "resource": "schema.table",
+       "fields": [
+        "year"
+       ]
+      }
+     }
+    ],
+    "fields": [
+     {
+      "name": "id",
+      "description": "Unique identifier",
+      "type": "serial"
+     },
+     {
+      "name": "variable",
+      "description": "Variable",
+      "type": "string"
+     },
+     {
+      "name": "source_category",
+      "description": "Source category (subsector of industrial processes)",
+      "type": "string"
+     },
+     {
+      "name": "crf",
+      "description": "Code of the source category in the Common Reporting Format (CRF)",
+      "type": "string"
+     },
+     {
+      "name": "unit",
+      "description": "Unit of measurement",
+      "type": "string"
+     },
+     {
+      "name": "year",
+      "description": "Scenario year",
+      "type": "integer"
+     },
+     {
+      "name": "value",
+      "description": "Value",
+      "type": "float"
+     }
+    ]
+   },
+   "dialect": {
+    "decimalSeparator": "."
+   }
+  }
+ ],
+ "metaMetadata": {
+  "metadataVersion": "OEP-1.4.0",
+  "metadataLicense": {
+   "name": "CC0-1.0",
+   "title": "Creative Commons Zero v1.0 Universal",
+   "path": "https://creativecommons.org/publicdomain/zero/1.0/"
+  }
+ }
+}
