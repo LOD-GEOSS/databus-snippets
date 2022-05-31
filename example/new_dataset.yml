@@ -1,0 +1,40 @@
+# add your dataset info below
+group:
+   id: general
+   title: Group Title                  # can be left out -> no documentation
+   abstract: Some Abstract text        # can be left out -> no documentation
+   description: Some description text  # can be left out -> no documentation
+dataset:
+   artifact: testartifact
+   version: '2022-05-31'
+   title: Test Title
+   abstract: This a short abstract for the dataset. Since this is only a test it is quite insignificant.
+   description: A bit longer description of the dataset.
+   license: http://this.is.a.license.uri.com/test
+   distributions:
+      -
+         url: https://yum-yab.github.io/data/databus-api-test/first/pizza-ont.owl
+         content_variants:
+            type: ontology
+            topic: pizza
+         format: owl                    # can be left out -> is inferred from the path
+      -
+         url: https://yum-yab.github.io/data/databus-api-test/first/Sample500.csv
+         content_variants:
+            type: randomData
+            topic: persons
+         format: csv
+      -
+         url: https://openenergy-platform.org/api/v0/schema/supply/tables/wind_turbine_library/rows/
+         content_variants:
+            type: turbineData
+            extra: external
+         format: json
+      -
+         url: https://yum-yab.github.io/data/databus-api-test/first/Sample500.csv.bz2
+         content_variants:
+            type: randomData
+            topic: persons
+            extra: different
+         format: csv
+         compression: bz2               # can be left out -> is inferred from the path
