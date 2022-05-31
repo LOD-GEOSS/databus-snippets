@@ -16,6 +16,10 @@ API_KEY = os.environ["DATABUS_API_KEY"]
 ACCOUNT_NAME = os.environ["DATABUS_ACCOUNT_NAME"]
 
 
+class DatabusError(Exception):
+    """Raised if deployment goes wrong"""
+
+
 @dataclass
 class DataGroup:
     account_name: str
@@ -64,6 +68,7 @@ class DatabusFile:
         """Fetches the necessary information of a file URI for the deploy to the databus."""
         self.uri = uri
         self.cvs = cvs
+        print(f"Fetching data from '{uri}'")
         resp = requests.get(uri, **kwargs)
         if resp.status_code > 400:
             print(f"ERROR for {uri} -> Status {str(resp.status_code)}")
@@ -154,22 +159,21 @@ class DataVersion:
         return json.dumps(data_id_dict)
 
 
-def deploy_to_databus(api_key: str, *databus_objects):
+def deploy_to_databus(api_key: str, databus_object):
+    target = databus_object.get_target_uri()
+    print(f"Deploying {target}")
+    submission_data = databus_object.to_jsonld()
 
-    for dbobj in databus_objects:
-        print(f"Deploying {dbobj.get_target_uri()}")
-        submission_data = dbobj.to_jsonld()
+    resp = requests.put(
+        target,
+        headers={"X-API-Key": api_key, "Content-Type": "application/json"},
+        data=submission_data,
+    )
 
-        resp = requests.put(
-            dbobj.get_target_uri(),
-            headers={"X-API-Key": api_key, "Content-Type": "application/json"},
-            data=submission_data,
-        )
-
-        if resp.status_code >= 400:
-            print(f"Response: Status {resp.status_code}; Text: {resp.text}")
-
-            print(f"Problematic file:\n {submission_data}")
+    if resp.status_code >= 400:
+        print(f"Response: Status {resp.status_code}; Text: {resp.text}")
+        print(f"Problematic file:\n {submission_data}")
+        raise DatabusError(f"Could not deploy '{target}'")
 
 
 if __name__ == "__main__":
@@ -178,4 +182,5 @@ if __name__ == "__main__":
 
     # For the new version deployed to dev.databus.dbpedia.org
     # API KEY can be found or generated under https://dev.databus.dbpedia.org/{{user}}#settings
-    deploy_to_databus(API_KEY, databus_group, databus_version)
+    deploy_to_databus(API_KEY, databus_group)
+    deploy_to_databus(API_KEY, databus_version)
