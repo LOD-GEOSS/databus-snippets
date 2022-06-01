@@ -9,6 +9,7 @@
         "oeo": "http://openenergy-platform.org/ontology/oeo/",
         "csvw": "http://www.w3.org/ns/csvw#",
         "obo":"http://purl.obolibrary.org/obo/",
+        "time":"http://www.w3.org/2006/time#",
         "title": {
             "@id": "dct:title",
             "@type": "xsd:string"
@@ -56,6 +57,22 @@
         "keywords": {
             "@id": "dc:subject",
             "@type": "@id"
+        },
+        "temporal": {
+            "@id": "time:hasTemporalDuration",
+            "@type": "@id"
+        },
+        "timeseries": {
+            "@id": "time:hasDateTimeDescription",
+            "@type": "@id"
+        },
+        "start": {
+            "@id": "time:hasBeginning",
+            "@type": "xsd:dateTime"
+        },
+        "end": {
+            "@id": "time:hasEnd",
+            "@type": "xsd:dateTime"
         }
     }
 }
