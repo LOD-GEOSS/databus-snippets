@@ -1,0 +1,63 @@
+{
+    "@context": "https://downloads.dbpedia.org/databus/context.jsonld",
+    "@graph": [
+        {
+            "@id": "https://energy.databus.dbpedia.org/denis/general",
+            "@type": "Group",
+            "title": "Group Title",
+            "abstract": "Some Abstract text",
+            "description": "Some description text"
+        },
+        {
+            "@type": "Dataset",
+            "@id": "https://energy.databus.dbpedia.org/denis/general/testartifact/2022-05-31#Dataset",
+            "hasVersion": "2022-05-31",
+            "title": "Test Title",
+            "abstract": "This a short abstract for the dataset. Since this is only a test it is quite insignificant.",
+            "description": "A bit longer description of the dataset.",
+            "license": "http://this.is.a.license.uri.com/test",
+            "distribution": [
+                {
+                    "@id": "https://energy.databus.dbpedia.org/denis/general/testartifact/2022-05-31#testartifact_type=ontology_topic=pizza.owl",
+                    "@type": "Part",
+                    "file": "https://energy.databus.dbpedia.org/denis/general/testartifact/2022-05-31/testartifact_type=ontology_topic=pizza.owl",
+                    "formatExtension": "owl",
+                    "compression": "none",
+                    "downloadURL": "https://yum-yab.github.io/data/databus-api-test/first/pizza-ont.owl",
+                    "byteSize": 163302,
+                    "sha256sum": "b71592685053db4171d2eaacb1eb1084d927fd6831f7ee8c9329903f90c72763"
+                },
+                {
+                    "@id": "https://energy.databus.dbpedia.org/denis/general/testartifact/2022-05-31#testartifact_type=randomData_topic=persons.csv",
+                    "@type": "Part",
+                    "file": "https://energy.databus.dbpedia.org/denis/general/testartifact/2022-05-31/testartifact_type=randomData_topic=persons.csv",
+                    "formatExtension": "csv",
+                    "compression": "none",
+                    "downloadURL": "https://yum-yab.github.io/data/databus-api-test/first/Sample500.csv",
+                    "byteSize": 34243,
+                    "sha256sum": "1c69ff99c105ab0f3459a4cd928f14284c996702148a2f62637df69f3e1a01ab"
+                },
+                {
+                    "@id": "https://energy.databus.dbpedia.org/denis/general/testartifact/2022-05-31#testartifact_type=turbineData_extra=external.json",
+                    "@type": "Part",
+                    "file": "https://energy.databus.dbpedia.org/denis/general/testartifact/2022-05-31/testartifact_type=turbineData_extra=external.json",
+                    "formatExtension": "json",
+                    "compression": "none",
+                    "downloadURL": "https://openenergy-platform.org/api/v0/schema/supply/tables/wind_turbine_library/rows/",
+                    "byteSize": 173469,
+                    "sha256sum": "56476b9c4130f931e164fdee2fe11ba275f30eff9046317013cbcffebd1c6922"
+                },
+                {
+                    "@id": "https://energy.databus.dbpedia.org/denis/general/testartifact/2022-05-31#testartifact_type=randomData_topic=persons_extra=different.csv.bz2",
+                    "@type": "Part",
+                    "file": "https://energy.databus.dbpedia.org/denis/general/testartifact/2022-05-31/testartifact_type=randomData_topic=persons_extra=different.csv.bz2",
+                    "formatExtension": "csv",
+                    "compression": "bz2",
+                    "downloadURL": "https://yum-yab.github.io/data/databus-api-test/first/Sample500.csv.bz2",
+                    "byteSize": 11059,
+                    "sha256sum": "247f4458ea39bc4d689226980749a766132688f88b241912144a8ff225623b48"
+                }
+            ]
+        }
+    ]
+}
