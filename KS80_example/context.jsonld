@@ -55,7 +55,7 @@
         },
         "keywords": {
             "@id": "dc:subject",
-            "@type": "@id"
+            "@type": "xsd:string"
         },
         "temporal": {
             "@id": "time:hasTemporalDuration",
