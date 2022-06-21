@@ -49,6 +49,38 @@
         "end": {
             "@id": "time:hasEnd",
             "@type": "xsd:dateTime"
+        },
+        "fields": {
+            "@id": "csvw:column",
+            "@type": "@id"
+        },
+        "resources": {
+            "@id": "csvw:table",
+            "@type": "@id"
+        },
+        "schema": {
+            "@id": "csvw:tableSchema",
+            "@type": "@id"
+        },
+        "name": {
+            "@id": "rdfs:label",
+            "@type": "xsd:string"
+        },
+        "type": {
+            "@id": "csvw:datatype",
+            "@type": "xsd:string"
+        },
+        "unit": {
+            "@id": "oeo:OEO_00040010",
+            "@type": "xsd:string"
+        },
+        "isAbout": {
+            "@id": "dc:subject",
+            "@type": "@id"
+        },
+        "valueReference": {
+            "@id": " http://purl.org/goodrelations/v1#valueReference",
+            "@type": "@id"
         }
     }
 }
