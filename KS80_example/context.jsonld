@@ -79,7 +79,7 @@
             "@type": "@id"
         },
         "valueReference": {
-            "@id": " http://purl.org/goodrelations/v1#valueReference",
+            "@id": "http://purl.org/goodrelations/v1#valueReference",
             "@type": "@id"
         }
     }
