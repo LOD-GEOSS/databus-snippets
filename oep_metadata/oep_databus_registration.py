@@ -1,17 +1,12 @@
+
+import os
 import pathlib
 import requests
 import datetime as dt
 from bs4 import BeautifulSoup
 
-from dev_databus_api_example import (
-    DataGroup,
-    DataVersion,
-    DatabusFile,
-    deploy_to_databus,
-    API_KEY,
-    ACCOUNT_NAME,
-    DatabusError
-)
+import databusclient
+from databusclient_example import create_distribution  # in future from databusclient
 from moss import submit_metadata_to_moss
 
 
@@ -19,12 +14,23 @@ class MetadataError(Exception):
     """Raised if metadata is invalid"""
 
 
+API_KEY = os.environ["DATABUS_API_KEY"]
+ACCOUNT_NAME = os.environ["DATABUS_ACCOUNT_NAME"]
+
+
 OEP_FOLDER = pathlib.Path(__file__).parent
 
 OEP_URL = "https://openenergy-platform.org"
+DATABUS_URI_BASE = "https://energy.databus.dbpedia.org"
 
 GROUP = "OEP"
-GROUP_YAML = OEP_FOLDER / "oep_group.yaml"
+GROUP_TITLE = "OEP Group"
+GROUP_ABSTRACT = "OEP Group holds databus releases of OEP tables"
+GROUP_DESCRIPTION = (
+    "Tables in the OEP group have been released automatically to databaus "
+    "via script oep_databus_registration.py from https://github.com/LOD-GEOSS/databus-snippets "
+    "additionally related metadata has been released to MOSS (https://moss.tools.dbpedia.org)."
+)
 
 SCHEMAS = [
     "boundaries",
@@ -62,12 +68,6 @@ def get_table_meta(schema, table):
     return response.json()
 
 
-def create_databus_group():
-    databus_group = DataGroup.from_yaml(GROUP_YAML)
-    databus_group.id = GROUP
-    deploy_to_databus(API_KEY, databus_group)
-
-
 def register_oep_table(schema_name, table_name):
     metadata = get_table_meta(schema_name, table_name)
 
@@ -81,30 +81,31 @@ def register_oep_table(schema_name, table_name):
     except (IndexError, KeyError) as e:
         raise MetadataError(f"No license found for for table '{schema_name}.{table_name}'.") from e
 
-    files = [
-        DatabusFile(
-            f"{OEP_URL}/api/v0/schema/{schema_name}/tables/{table_name}/rows/",
+    distributions = [
+        create_distribution(
+            url=f"{OEP_URL}/api/v0/schema/{schema_name}/tables/{table_name}/rows/",
             cvs={},
-            file_ext="json",
+            file_format="json"
         )
     ]
 
-    databus_version = DataVersion(
-        account_name=ACCOUNT_NAME,
-        group=GROUP,
-        artifact=table_name,
-        version=dt.date.today().isoformat(),
+    version_id = f"{DATABUS_URI_BASE}/{ACCOUNT_NAME}/{GROUP}/{table_name}/{dt.date.today().isoformat()}"
+    dataset = databusclient.createDataset(
+        version_id,
         title=metadata["title"],
         abstract=abstract,
         description=metadata.get("description", ""),
         license=license_,
-        databus_files=files,
+        distributions=distributions,
+        group_title=GROUP_TITLE,
+        group_abstract=GROUP_ABSTRACT,
+        group_description=GROUP_DESCRIPTION
     )
 
-    deploy_to_databus(API_KEY, databus_version)
+    databusclient.deploy(dataset, API_KEY)
 
     # Get file identifier:
-    databus_identifier = f"{databus_version.version_uri}/{databus_version.artifact}_{files[0].id_string}"
+    databus_identifier = f"{version_id}/{table_name}_.json"
     submit_metadata_to_moss(databus_identifier, metadata)
 
 
@@ -113,10 +114,9 @@ def register_oep_tables():
         for table_name in get_tables(schema_name):
             try:
                 register_oep_table(schema_name, table_name)
-            except (DatabusError, MetadataError) as e:
+            except MetadataError as e:
                 print(f"{e}\nSkipping registration for table '{schema_name}.{table_name}'")
 
 
 if __name__ == "__main__":
-    create_databus_group()
     register_oep_tables()
