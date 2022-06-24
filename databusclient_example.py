@@ -55,9 +55,9 @@ def create_dataset_from_yaml(yaml_path: str):
         group_abstract=data["group"].get("abstract", None),
         group_description=data["group"].get("description", None))
 
-
     return dataset
 
-dataset = create_dataset_from_yaml("./example/new_dataset.yml")
 
-deploy(dataset, API_KEY)
+if __name__ == "__main__":
+    dataset = create_dataset_from_yaml("./example/new_dataset.yml")
+    deploy(dataset, API_KEY)
