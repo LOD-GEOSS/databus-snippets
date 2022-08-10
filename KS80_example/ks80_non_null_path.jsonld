@@ -2,7 +2,7 @@
     "@context": "https://raw.githubusercontent.com/LOD-GEOSS/databus-snippets/master/KS80_example/context.jsonld",
     "name": "ksz2050_r2_ks80_co2_emissions_industrial_processes",
     "title": "Projections of CO2 emission from industrial processes in scenario KS80",
-    "id": "http://openenergyplatform.org/dataedit/view/model_draft/ksz2050_r2_KS80_co2_emissions_industrial_processes",
+    "id": "https://openenergy-platform.org/api/v0/schema/scenario/tables/ksz2050_r2_ks80_co2_emissions_industrial_processes/meta",
     "description": "This table holds CO2 emissions projections of the KS80 split by source categories. The data corresponds to the data in table 6-2 of the report.",
     "language": [
         "en-GB"
@@ -104,7 +104,7 @@
         {
             "profile": "tabular-data-resource",
             "name": "ksz2050_r2_ks80_co2_emissions_industrial_processes",
-            "path": "https://github.com/OpenEnergyPlatform/examples/tree/master/metadata",
+            "path": "https://openenergy-platform.org/api/v0/schema/scenario/tables/ksz2050_r2_ks80_co2_emissions_industrial_processes/meta#Table",
             "format": "PostgreSQL",
             "encoding": "UTF-8",
             "schema": {
