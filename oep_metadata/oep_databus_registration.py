@@ -65,21 +65,29 @@ def get_tables(schema):
 def get_table_meta(schema, table):
     meta_url = f"{OEP_URL}/api/v0/schema/{schema}/tables/{table}/meta"
     response = requests.get(meta_url)
-    return response.json()
+    metadata = response.json()
+
+    if len(metadata) == 0:
+        raise MetadataError(f"Metadata for table '{schema}.{table}' is empty.")
+
+    abstract = metadata.get("context", {}).get("documentation", "")
+    if not abstract:
+        raise MetadataError(f"Abstract for table '{schema}.{table}' is empty.")
+
+    try:
+        license_ = metadata["licenses"][0]["path"]
+    except (IndexError, KeyError):
+        license_ = None
+    if not license_:
+        raise MetadataError(f"No license found for for table '{schema}.{table}'.")
+
+    return metadata
 
 
 def register_oep_table(schema_name, table_name):
     metadata = get_table_meta(schema_name, table_name)
-
-    if len(metadata) == 0:
-        raise MetadataError(f"Metadata for table '{schema_name}.{table_name}' is empty.")
-    abstract = metadata.get("context", {}).get("documentation", "")
-    if not abstract:
-        raise MetadataError(f"Abstract for table '{schema_name}.{table_name}' is empty.")
-    try:
-        license_ = metadata["licenses"][0]["path"]
-    except (IndexError, KeyError) as e:
-        raise MetadataError(f"No license found for for table '{schema_name}.{table_name}'.") from e
+    abstract = metadata["context"]["documentation"]
+    license_ = metadata["licenses"][0]["path"]
 
     distributions = [
         create_distribution(
