@@ -10,7 +10,7 @@
         "csvw": "http://www.w3.org/ns/csvw#",
         "obo":"http://purl.obolibrary.org/obo/",
         "time":"http://www.w3.org/2006/time#",
-        "dbo": "https://dbpedia.org/ontology/",
+        "dbo": "http://dbpedia.org/ontology/",
         "saref": "https://saref.etsi.org/core/",
         "title": {
             "@id": "dct:title",
