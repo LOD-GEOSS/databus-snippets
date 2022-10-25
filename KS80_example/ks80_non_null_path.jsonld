@@ -156,8 +156,8 @@
                                 "value": "Cement production",
                                 "name": "CRF sector (IPCC 2006): cement production",
                                 "path": "http://openenergy-platform.org/ontology/oeo/OEO_00010165"
-                           },
-			],
+                           }
+			]
                     },
                     {
                         "name": "crf",
