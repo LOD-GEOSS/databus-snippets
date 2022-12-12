@@ -5,6 +5,8 @@ import requests
 import datetime as dt
 from bs4 import BeautifulSoup
 
+from oem2orm.oep_oedialect_oem2orm import api_updateMdOnTable
+
 import databusclient
 from databusclient_example import create_distribution  # in future from databusclient
 from moss import submit_metadata_to_moss
@@ -16,7 +18,7 @@ class MetadataError(Exception):
 
 API_KEY = os.environ["DATABUS_API_KEY"]
 ACCOUNT_NAME = os.environ["DATABUS_ACCOUNT_NAME"]
-
+OEP_TOKEN = os.environ["OEP_TOKEN"]
 
 OEP_FOLDER = pathlib.Path(__file__).parent
 
@@ -48,6 +50,7 @@ SCHEMAS = [
     "supply",
 ]
 
+DATABUS_DL_LINK_FILE_FORMAT = "csv"
 
 def get_tables(schema):
     schema_url = f"{OEP_URL}/dataedit/view/{schema}"
@@ -67,6 +70,10 @@ def get_table_meta(schema, table):
     response = requests.get(meta_url)
     return response.json()
 
+def update_selective_metadata_fields(metadata: dict= None, table: str=None):
+    # update oem-key#16 `@id`
+    metadata['@id'] = f"{DATABUS_URI_BASE}/{ACCOUNT_NAME}/{GROUP}/{table}"
+    return metadata
 
 def register_oep_table(schema_name, table_name):
     metadata = get_table_meta(schema_name, table_name)
@@ -83,8 +90,13 @@ def register_oep_table(schema_name, table_name):
 
     distributions = [
         create_distribution(
-            url=f"{OEP_URL}/api/v0/schema/{schema_name}/tables/{table_name}/rows/",
-            cvs={},
+            url=f"{OEP_URL}/api/v0/schema/{schema_name}/tables/{table_name}/rows?form={DATABUS_DL_LINK_FILE_FORMAT}",
+            cvs={"variant": "data"},
+            file_format=DATABUS_DL_LINK_FILE_FORMAT
+        ),
+        create_distribution(
+            url=f"{OEP_URL}/api/v0/schema/{schema_name}/tables/{table_name}/meta",
+            cvs={"variant": "metadata"},
             file_format="json"
         )
     ]
@@ -103,6 +115,10 @@ def register_oep_table(schema_name, table_name):
     )
 
     databusclient.deploy(dataset, API_KEY)
+
+    # update Metadata on OEP
+    updated_metadata = update_selective_metadata_fields(metadata, table_name)
+    api_updateMdOnTable(updated_metadata, token=OEP_TOKEN)
 
     # Get file identifier:
     databus_identifier = f"{version_id}/{table_name}_.json"
