@@ -2,3 +2,4 @@ requests
 beautifulsoup4>=4.11.1
 pyyaml>=6.0
 databusclient==0.3
+oem2orm
