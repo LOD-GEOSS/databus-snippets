@@ -121,7 +121,7 @@ def register_oep_table(schema_name, table_name):
     api_updateMdOnTable(updated_metadata, token=OEP_TOKEN)
 
     # Get file identifier:
-    databus_identifier = f"{version_id}/{table_name}_.json"
+    databus_identifier =  f"{DATABUS_URI_BASE}/{ACCOUNT_NAME}/{GROUP}/{table_name}"
     submit_metadata_to_moss(databus_identifier, metadata)
 
 
